@@ -19,8 +19,8 @@ class mdaPianoProgram
 {
   friend class mdaPiano;
 public:
-	mdaPianoProgram();
-	~mdaPianoProgram() {}
+  mdaPianoProgram();
+  ~mdaPianoProgram() {}
 
 private:
   float param[NPARAMS];
@@ -61,32 +61,32 @@ struct KGRP  //keygroup
 class mdaPiano : public AudioEffectX
 {
 public:
-	mdaPiano(audioMasterCallback audioMaster);
-	~mdaPiano();
+  mdaPiano(audioMasterCallback audioMaster);
+  ~mdaPiano();
 
-	virtual void process(float **inputs, float **outputs, VstInt32 sampleframes);
-	virtual void processReplacing(float **inputs, float **outputs, VstInt32 sampleframes);
-	virtual VstInt32 processEvents(VstEvents* events);
+  virtual void process(float **inputs, float **outputs, VstInt32 sampleframes);
+  virtual void processReplacing(float **inputs, float **outputs, VstInt32 sampleframes);
+  virtual VstInt32 processEvents(VstEvents* events);
 
-	virtual void setProgram(VstInt32 program);
-	virtual void setProgramName(char *name);
-	virtual void getProgramName(char *name);
-	virtual void setParameter(VstInt32 index, float value);
-	virtual float getParameter(VstInt32 index);
-	virtual void getParameterLabel(VstInt32 index, char *label);
-	virtual void getParameterDisplay(VstInt32 index, char *text);
-	virtual void getParameterName(VstInt32 index, char *text);
-	virtual void setBlockSize(VstInt32 blockSize);
+  virtual void setProgram(VstInt32 program);
+  virtual void setProgramName(char *name);
+  virtual void getProgramName(char *name);
+  virtual void setParameter(VstInt32 index, float value);
+  virtual float getParameter(VstInt32 index);
+  virtual void getParameterLabel(VstInt32 index, char *label);
+  virtual void getParameterDisplay(VstInt32 index, char *text);
+  virtual void getParameterName(VstInt32 index, char *text);
+  virtual void setBlockSize(VstInt32 blockSize);
   virtual void resume();
 
-	virtual bool getOutputProperties (VstInt32 index, VstPinProperties* properties);
-	virtual bool getProgramNameIndexed (VstInt32 category, VstInt32 index, char* text);
-	virtual bool copyProgram (VstInt32 destination);
-	virtual bool getEffectName (char* name);
-	virtual bool getVendorString (char* text);
-	virtual bool getProductString (char* text);
-	virtual VstInt32 getVendorVersion () {return 1;}
-	virtual VstInt32 canDo (char* text);
+  virtual bool getOutputProperties (VstInt32 index, VstPinProperties* properties);
+  virtual bool getProgramNameIndexed (VstInt32 category, VstInt32 index, char* text);
+  virtual bool copyProgram (VstInt32 destination);
+  virtual bool getEffectName (char* name);
+  virtual bool getVendorString (char* text);
+  virtual bool getProductString (char* text);
+  virtual VstInt32 getVendorVersion () {return 1;}
+  virtual VstInt32 canDo (char* text);
   
   virtual VstInt32 getNumMidiInputChannels ()  { return 1; }
 
@@ -94,7 +94,7 @@ public:
   void guiGetDisplay(VstInt32 index, char *label);
 
 private:
-	void update();  //my parameter update
+  void update();  //my parameter update
   void noteOn(VstInt32 note, VstInt32 velocity);
   void fillpatch(VstInt32 p, char *name, float p0, float p1, float p2, float p3, float p4,
                  float p5, float p6, float p7, float p8, float p9, float p10,float p11);

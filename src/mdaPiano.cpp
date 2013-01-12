@@ -21,21 +21,21 @@ AudioEffect *createEffectInstance(audioMasterCallback audioMaster)
 
 mdaPianoProgram::mdaPianoProgram()
 {
-	param[0]  = 0.50f; //Decay
-	param[1]  = 0.50f; //Release
-	param[2]  = 0.50f; //Hardness
+  param[0]  = 0.50f; //Decay
+  param[1]  = 0.50f; //Release
+  param[2]  = 0.50f; //Hardness
 
   param[3]  = 0.50f; //Vel>Hard
   param[4]  = 1.00f; //Muffle
-	param[5]  = 0.50f; //Vel>Muff
+  param[5]  = 0.50f; //Vel>Muff
 
-	param[6]  = 0.33f; //Vel Curve
+  param[6]  = 0.33f; //Vel Curve
   param[7]  = 0.50f; //Stereo
   param[8]  = 0.33f; //Max Poly
 
   param[9]  = 0.50f; //Tune
-	param[10] = 0.00f; //Random
-	param[11] = 0.50f; //Stretch
+  param[10] = 0.00f; //Random
+  param[11] = 0.50f; //Stretch
 
   strcpy (name, "mda Piano");
 }
@@ -43,10 +43,10 @@ mdaPianoProgram::mdaPianoProgram()
 
 mdaPiano::mdaPiano(audioMasterCallback audioMaster) : AudioEffectX(audioMaster, NPROGS, NPARAMS)
 {
-	Fs = 44100.0f;  iFs = 1.0f/Fs;  cmax = 0x7F;  //just in case...
+  Fs = 44100.0f;  iFs = 1.0f/Fs;  cmax = 0x7F;  //just in case...
 
   programs = new mdaPianoProgram[NPROGS];
-	if(programs)
+  if(programs)
   {
     //fill patches...
     VstInt32 i=0;
@@ -56,13 +56,13 @@ mdaPiano::mdaPiano(audioMasterCallback audioMaster) : AudioEffectX(audioMaster, 
   }
 
   if(audioMaster)
-	{
-		setNumInputs(0);
-		setNumOutputs(NOUTS);
-		canProcessReplacing();
-		isSynth();
-		setUniqueID('MDAp');	///
-	}
+  {
+    setNumInputs(0);
+    setNumOutputs(NOUTS);
+    canProcessReplacing();
+    isSynth();
+    setUniqueID('MDAp');  ///
+  }
 
   waves = pianoData;
 
@@ -99,7 +99,7 @@ mdaPiano::mdaPiano(audioMasterCallback audioMaster) : AudioEffectX(audioMaster, 
   guiUpdate = 0;
 
   update();
-	suspend();
+  suspend();
 }
 
 
@@ -145,10 +145,10 @@ mdaPiano::~mdaPiano ()  //destroy any buffers...
 
 void mdaPiano::setProgram(VstInt32 program)
 {
-	curProgram = program;
-	update();
+  curProgram = program;
+  update();
 
-	// TODO: guiUpdate ???
+  // TODO: guiUpdate ???
 }
 
 
@@ -179,34 +179,34 @@ void mdaPiano::fillpatch(VstInt32 p, char *name, float p0, float p1, float p2, f
 float mdaPiano::getParameter(VstInt32 index)     { return programs[curProgram].param[index]; }
 void  mdaPiano::setProgramName(char *name)   { strcpy(programs[curProgram].name, name); }
 void  mdaPiano::getProgramName(char *name)   { strcpy(name, programs[curProgram].name); }
-void  mdaPiano::setBlockSize(VstInt32 blockSize) {	AudioEffectX::setBlockSize(blockSize); }
+void  mdaPiano::setBlockSize(VstInt32 blockSize) {  AudioEffectX::setBlockSize(blockSize); }
 bool  mdaPiano::getEffectName(char* name)    { strcpy(name, "Piano"); return true; }
-bool  mdaPiano::getVendorString(char* text)  {	strcpy(text, "mda"); return true; }
+bool  mdaPiano::getVendorString(char* text)  {  strcpy(text, "mda"); return true; }
 bool  mdaPiano::getProductString(char* text) { strcpy(text, "mda Piano"); return true; }
 
 
 bool mdaPiano::getOutputProperties(VstInt32 index, VstPinProperties* properties)
 {
-	if(index<NOUTS)
-	{
-		if(index) sprintf(properties->label, "Piano R");
+  if(index<NOUTS)
+  {
+    if(index) sprintf(properties->label, "Piano R");
          else sprintf(properties->label, "Piano L");
-		properties->flags = kVstPinIsActive;
-		if(index<2) properties->flags |= kVstPinIsStereo; //make channel 1+2 stereo
-		return true;
-	}
-	return false;
+    properties->flags = kVstPinIsActive;
+    if(index<2) properties->flags |= kVstPinIsStereo; //make channel 1+2 stereo
+    return true;
+  }
+  return false;
 }
 
 
 bool mdaPiano::getProgramNameIndexed(VstInt32 category, VstInt32 index, char* text)
 {
-	if ((unsigned int)index < NPROGS)
-	{
-		strcpy(text, programs[index].name);
-		return true;
-	}
-	return false;
+  if ((unsigned int)index < NPROGS)
+  {
+    strcpy(text, programs[index].name);
+    return true;
+  }
+  return false;
 }
 
 
@@ -217,7 +217,7 @@ bool mdaPiano::copyProgram(VstInt32 destination)
     programs[destination] = programs[curProgram];
     return true;
   }
-	return false;
+  return false;
 }
 
 
@@ -231,31 +231,31 @@ VstInt32 mdaPiano::canDo(char* text)
 
 void mdaPiano::getParameterName(VstInt32 index, char *label)
 {
-	switch (index)
-	{
-		case  0: strcpy(label, "Envelope Decay"); break;
-		case  1: strcpy(label, "Envelope Release"); break;
-		case  2: strcpy(label, "Hardness Offset"); break;
+  switch (index)
+  {
+    case  0: strcpy(label, "Envelope Decay"); break;
+    case  1: strcpy(label, "Envelope Release"); break;
+    case  2: strcpy(label, "Hardness Offset"); break;
 
     case  3: strcpy(label, "Velocity to Hardness"); break;
-		case  4: strcpy(label, "Muffling Filter"); break;
-		case  5: strcpy(label, "Velocity to Muffling"); break;
+    case  4: strcpy(label, "Muffling Filter"); break;
+    case  5: strcpy(label, "Velocity to Muffling"); break;
 
     case  6: strcpy(label, "Velocity Sensitivity"); break;
     case  7: strcpy(label, "Stereo Width"); break;
     case  8: strcpy(label, "Polyphony"); break;
 
     case  9: strcpy(label, "Fine Tuning"); break;
-		case 10: strcpy(label, "Random Detuning"); break;
-		default: strcpy(label, "Stretch Tuning"); break;
- 	}
+    case 10: strcpy(label, "Random Detuning"); break;
+    default: strcpy(label, "Stretch Tuning"); break;
+   }
 }
 
 
 void mdaPiano::getParameterDisplay(VstInt32 index, char *text)
 {
-	char string[16];
-	float * param = programs[curProgram].param;
+  char string[16];
+  float * param = programs[curProgram].param;
 
   switch(index)
   {
@@ -268,8 +268,8 @@ void mdaPiano::getParameterDisplay(VstInt32 index, char *text)
     case 11: sprintf(string, "%+.1f", 100.0f * param[index] -  50.0f); break;
     default: sprintf(string, "%.0f", 100.0f * param[index]);
   }
-	string[8] = 0;
-	strcpy(text, (char *)string);
+  string[8] = 0;
+  strcpy(text, (char *)string);
 }
 
 
@@ -298,9 +298,9 @@ void mdaPiano::guiGetDisplay(VstInt32 index, char *label)
 
 void mdaPiano::process(float **inputs, float **outputs, VstInt32 sampleFrames)
 {
-	float* out0 = outputs[0];
-	float* out1 = outputs[1];
-	VstInt32 event=0, frame=0, frames, v;
+  float* out0 = outputs[0];
+  float* out1 = outputs[1];
+  VstInt32 event=0, frame=0, frames, v;
   float x, l, r;
   VstInt32 i;
 
@@ -357,9 +357,9 @@ void mdaPiano::process(float **inputs, float **outputs, VstInt32 sampleFrames)
 
 void mdaPiano::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames)
 {
-	float* out0 = outputs[0];
-	float* out1 = outputs[1];
-	VstInt32 event=0, frame=0, frames, v;
+  float* out0 = outputs[0];
+  float* out1 = outputs[1];
+  VstInt32 event=0, frame=0, frames, v;
   float x, l, r;
   VstInt32 i;
 
@@ -504,10 +504,10 @@ VstInt32 mdaPiano::processEvents(VstEvents* ev)
   VstInt32 npos=0;
 
   for (VstInt32 i=0; i<ev->numEvents; i++)
-	{
-		if((ev->events[i])->type != kVstMidiType) continue;
-		VstMidiEvent* event = (VstMidiEvent*)ev->events[i];
-		char* midiData = event->midiData;
+  {
+    if((ev->events[i])->type != kVstMidiType) continue;
+    VstMidiEvent* event = (VstMidiEvent*)ev->events[i];
+    char* midiData = event->midiData;
 
     switch(midiData[0] & 0xf0) //status byte (all channels)
     {
@@ -566,8 +566,8 @@ VstInt32 mdaPiano::processEvents(VstEvents* ev)
 
     if(npos>EVENTBUFFER) npos -= 3; //discard events if buffer full!!
     event++; //?
-	}
+  }
   notes[npos] = EVENTS_DONE;
-	return 1;
+  return 1;
 }
 

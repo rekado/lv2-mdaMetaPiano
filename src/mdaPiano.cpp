@@ -20,8 +20,6 @@
 #include <math.h>
 
 
-//#include "AEffEditor.hpp" ////for GUI
-
 AudioEffect *createEffectInstance(audioMasterCallback audioMaster)
 {
   return new mdaPiano(audioMaster);
@@ -104,8 +102,6 @@ mdaPiano::mdaPiano(audioMasterCallback audioMaster) : AudioEffectX(audioMaster, 
   cpos = sustain = activevoices = 0;
   comb = new float[256];
 
-  guiUpdate = 0;
-
   update();
   suspend();
 }
@@ -155,8 +151,6 @@ void mdaPiano::setProgram(VstInt32 program)
 {
   curProgram = program;
   update();
-
-  // TODO: guiUpdate ???
 }
 
 
@@ -164,10 +158,6 @@ void mdaPiano::setParameter(VstInt32 index, float value)
 {
   programs[curProgram].param[index] = value;
   update();
-
-//  if(editor) editor->postUpdate(); //For GUI
-
-  guiUpdate = index + 0x100 + (guiUpdate & 0xFFFF00);
 }
 
 
@@ -188,34 +178,6 @@ float mdaPiano::getParameter(VstInt32 index)     { return programs[curProgram].p
 void  mdaPiano::setProgramName(char *name)   { strcpy(programs[curProgram].name, name); }
 void  mdaPiano::getProgramName(char *name)   { strcpy(name, programs[curProgram].name); }
 void  mdaPiano::setBlockSize(VstInt32 blockSize) {  AudioEffectX::setBlockSize(blockSize); }
-bool  mdaPiano::getEffectName(char* name)    { strcpy(name, "Piano"); return true; }
-bool  mdaPiano::getVendorString(char* text)  {  strcpy(text, "mda"); return true; }
-bool  mdaPiano::getProductString(char* text) { strcpy(text, "mda Piano"); return true; }
-
-
-bool mdaPiano::getOutputProperties(VstInt32 index, VstPinProperties* properties)
-{
-  if(index<NOUTS)
-  {
-    if(index) sprintf(properties->label, "Piano R");
-         else sprintf(properties->label, "Piano L");
-    properties->flags = kVstPinIsActive;
-    if(index<2) properties->flags |= kVstPinIsStereo; //make channel 1+2 stereo
-    return true;
-  }
-  return false;
-}
-
-
-bool mdaPiano::getProgramNameIndexed(VstInt32 category, VstInt32 index, char* text)
-{
-  if ((unsigned int)index < NPROGS)
-  {
-    strcpy(text, programs[index].name);
-    return true;
-  }
-  return false;
-}
 
 
 bool mdaPiano::copyProgram(VstInt32 destination)
@@ -226,14 +188,6 @@ bool mdaPiano::copyProgram(VstInt32 destination)
     return true;
   }
   return false;
-}
-
-
-VstInt32 mdaPiano::canDo(char* text)
-{
-  if(strcmp(text, "receiveVstEvents") == 0) return 1;
-  if(strcmp(text, "receiveVstMidiEvent") == 0) return 1;
-  return -1;
 }
 
 
@@ -292,16 +246,6 @@ void mdaPiano::getParameterLabel(VstInt32 index, char *label)
     default: strcpy(label, "%");
   }
 }
-
-
-void mdaPiano::guiGetDisplay(VstInt32 index, char *label)
-{
-  getParameterName(index,  label);
-  strcat(label, " = ");
-  getParameterDisplay(index, label + strlen(label));
-  getParameterLabel(index, label + strlen(label));
-}
-
 
 
 void mdaPiano::process(float **inputs, float **outputs, VstInt32 sampleFrames)

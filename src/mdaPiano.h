@@ -79,19 +79,8 @@ public:
   virtual void setBlockSize(VstInt32 blockSize);
   virtual void resume();
 
-  virtual bool getOutputProperties (VstInt32 index, VstPinProperties* properties);
-  virtual bool getProgramNameIndexed (VstInt32 category, VstInt32 index, char* text);
   virtual bool copyProgram (VstInt32 destination);
-  virtual bool getEffectName (char* name);
-  virtual bool getVendorString (char* text);
-  virtual bool getProductString (char* text);
-  virtual VstInt32 getVendorVersion () {return 1;}
-  virtual VstInt32 canDo (char* text);
-  
-  virtual VstInt32 getNumMidiInputChannels ()  { return 1; }
 
-  VstInt32 guiUpdate;
-  void guiGetDisplay(VstInt32 index, char *label);
 
 private:
   void update();  //my parameter update

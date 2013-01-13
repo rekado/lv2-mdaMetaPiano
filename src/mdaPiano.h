@@ -5,6 +5,8 @@
 
 #include <string.h>
 
+#include <lv2synth.hpp>
+
 #define NPARAMS 12       //number of parameters
 #define NPROGS   8       //number of programs
 #define NOUTS    2       //number of outputs
@@ -56,10 +58,9 @@ struct KGRP  //keygroup
   VstInt32  loop;
 };
 
-class mdaPiano : public AudioEffectX
-{
+class mdaPiano : public LV2::Synth<mdaPianoVoice, mdaPiano> {
 public:
-  mdaPiano(audioMasterCallback audioMaster);
+  mdaPiano(double rate);
   ~mdaPiano();
 
   virtual void process(float **inputs, float **outputs, VstInt32 sampleframes);

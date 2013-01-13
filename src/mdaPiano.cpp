@@ -43,7 +43,8 @@ mdaPianoProgram::mdaPianoProgram()
 }
 
 
-mdaPiano::mdaPiano(audioMasterCallback audioMaster) : AudioEffectX(audioMaster, NPROGS, NPARAMS)
+mdaPiano::mdaPiano(double rate)
+  : LV2::Synth<mdaPianoVoice, mdaPiano>(NPROGS, NPARAMS)
 {
   Fs = 44100.0f;  iFs = 1.0f/Fs;  cmax = 0x7F;  //just in case...
 
@@ -57,14 +58,6 @@ mdaPiano::mdaPiano(audioMasterCallback audioMaster) : AudioEffectX(audioMaster, 
     setProgram(0);
   }
 
-  if(audioMaster)
-  {
-    setNumInputs(0);
-    setNumOutputs(NOUTS);
-    canProcessReplacing();
-    isSynth();
-    setUniqueID('MDAp');  ///
-  }
 
   //Waveform data and keymapping is hard-wired in *this* version
   kgrp[ 0].root = 36;  kgrp[ 0].high = 37;  kgrp[ 0].pos = 0;       kgrp[ 0].end = 36275;   kgrp[ 0].loop = 14774;

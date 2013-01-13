@@ -18,6 +18,8 @@
 #include <stdio.h>
 #include <math.h>
 
+#define STRING_BUF 2048
+static const char* sample_file = "samples.raw";
 
 AudioEffect *createEffectInstance(audioMasterCallback audioMaster)
 {
@@ -69,9 +71,6 @@ mdaPiano::mdaPiano(audioMasterCallback audioMaster) : AudioEffectX(audioMaster, 
     setUniqueID('MDAp');  ///
   }
 
-  waves = pianoData;
-
-
   //Waveform data and keymapping is hard-wired in *this* version
   kgrp[ 0].root = 36;  kgrp[ 0].high = 37;  kgrp[ 0].pos = 0;       kgrp[ 0].end = 36275;   kgrp[ 0].loop = 14774;
   kgrp[ 1].root = 40;  kgrp[ 1].high = 41;  kgrp[ 1].pos = 36278;   kgrp[ 1].end = 83135;   kgrp[ 1].loop = 16268;
@@ -88,6 +87,7 @@ mdaPiano::mdaPiano(audioMasterCallback audioMaster) : AudioEffectX(audioMaster, 
   kgrp[12].root = 84;  kgrp[12].high = 85;  kgrp[12].pos = 532295;  kgrp[12].end = 560192;  kgrp[12].loop = 6011;
   kgrp[13].root = 88;  kgrp[13].high = 89;  kgrp[13].pos = 560194;  kgrp[13].end = 574121;  kgrp[13].loop = 3414;
   kgrp[14].root = 93;  kgrp[14].high = 999; kgrp[14].pos = 574123;  kgrp[14].end = 586343;  kgrp[14].loop = 2399;
+  load_samples(&waves);
 
   //initialise...
   for(VstInt32 v=0; v<NVOICES; v++)
@@ -522,3 +522,41 @@ VstInt32 mdaPiano::processEvents(VstEvents* ev)
   return 1;
 }
 
+
+void mdaPiano::load_samples(short **buffer)
+{
+  FILE *f;
+  long num, size;
+  char filepath[STRING_BUF];
+
+  strncpy(filepath, bundle_path(), STRING_BUF);
+  strncat(filepath,
+          sample_file,
+          STRING_BUF - strlen(filepath));
+  f = fopen(filepath, "rb");
+  if (f == NULL) {
+    fputs("File error", stderr);
+    exit(1);
+  }
+
+  // obtain file size
+  fseek(f, 0, SEEK_END);
+  size = ftell(f);
+  rewind(f);
+
+  // allocate memory to contain the whole file
+  *buffer = (short*) malloc (sizeof(short)*size);
+  if (*buffer == NULL) {
+    fputs("Memory error", stderr);
+    exit(2);
+  }
+
+  // copy the file into the buffer
+  num = fread(*buffer, 1, size, f);
+  if (num != size) {
+    fputs ("Reading error", stderr);
+    exit (3);
+  }
+  fclose (f);
+  return;
+}

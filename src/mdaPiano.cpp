@@ -52,7 +52,7 @@ mdaPiano::mdaPiano(double rate)
   if(programs)
   {
     //fill patches...
-    VstInt32 i=0;
+    uint32_t i=0;
     //TODO: load initial values from default preset
     fillpatch(i++, "mda Piano",        0.500f, 0.500f, 0.500f, 0.5f, 0.803f, 0.251f, 0.376f, 0.500f, 0.330f, 0.500f, 0.246f, 0.500f);
     setProgram(0);
@@ -62,7 +62,7 @@ mdaPiano::mdaPiano(double rate)
   load_kgrp(kgrp);
 
   //initialise...
-  for(VstInt32 v=0; v<NVOICES; v++)
+  for(uint32_t v=0; v<NVOICES; v++)
   {
     voice[v].env = 0.0f;
     voice[v].dec = 0.99f; //all notes off
@@ -81,7 +81,7 @@ mdaPiano::mdaPiano(double rate)
 void mdaPiano::update()  //parameter change
 {
   float * param = programs[curProgram].param;
-  size = (VstInt32)(12.0f * param[2] - 6.0f);
+  size = (uint32_t)(12.0f * param[2] - 6.0f);
   sizevel = 0.12f * param[3];
   muffvel = param[5] * param[5] * 5.0f;
 
@@ -96,7 +96,7 @@ void mdaPiano::update()  //parameter change
   trim = 1.50f - 0.79f * cdep;
   width = 0.04f * param[7];  if(width > 0.03f) width = 0.03f;
 
-  poly = 8 + (VstInt32)(24.9f * param[8]);
+  poly = 8 + (uint32_t)(24.9f * param[8]);
 }
 
 
@@ -116,20 +116,20 @@ mdaPiano::~mdaPiano ()  //destroy any buffers...
 }
 
 
-void mdaPiano::setParameter(VstInt32 index, float value)
+void mdaPiano::setParameter(uint32_t index, float value)
 {
   programs[curProgram].param[index] = value;
   update();
 }
 
 
-void mdaPiano::process(float **inputs, float **outputs, VstInt32 sampleFrames)
+void mdaPiano::process(float **inputs, float **outputs, uint32_t sampleFrames)
 {
   float* out0 = outputs[0];
   float* out1 = outputs[1];
-  VstInt32 event=0, frame=0, frames, v;
+  uint32_t event=0, frame=0, frames, v;
   float x, l, r;
-  VstInt32 i;
+  uint32_t i;
 
   while(frame<sampleFrames)
   {
@@ -172,8 +172,8 @@ void mdaPiano::process(float **inputs, float **outputs, VstInt32 sampleFrames)
 
     if(frame<sampleFrames)
     {
-      VstInt32 note = notes[event++];
-      VstInt32 vel  = notes[event++];
+      uint32_t note = notes[event++];
+      uint32_t vel  = notes[event++];
       noteOn(note, vel);
     }
   }
@@ -182,13 +182,13 @@ void mdaPiano::process(float **inputs, float **outputs, VstInt32 sampleFrames)
 }
 
 
-void mdaPiano::processReplacing(float **inputs, float **outputs, VstInt32 sampleFrames)
+void mdaPiano::processReplacing(float **inputs, float **outputs, uint32_t sampleFrames)
 {
   float* out0 = outputs[0];
   float* out1 = outputs[1];
-  VstInt32 event=0, frame=0, frames, v;
+  uint32_t event=0, frame=0, frames, v;
   float x, l, r;
-  VstInt32 i;
+  uint32_t i;
 
   while(frame<sampleFrames)
   {
@@ -242,8 +242,8 @@ if(!(r > -2.0f) || !(r < 2.0f))
 
     if(frame<sampleFrames)
     {
-      VstInt32 note = notes[event++];
-      VstInt32 vel  = notes[event++];
+      uint32_t note = notes[event++];
+      uint32_t vel  = notes[event++];
       noteOn(note, vel);
     }
   }
@@ -252,11 +252,11 @@ if(!(r > -2.0f) || !(r < 2.0f))
 }
 
 
-void mdaPiano::noteOn(VstInt32 note, VstInt32 velocity)
+void mdaPiano::noteOn(uint32_t note, uint32_t velocity)
 {
   float * param = programs[curProgram].param;
   float l=99.0f;
-  VstInt32  v, vl=0, k, s;
+  uint32_t  v, vl=0, k, s;
 
   if(velocity>0)
   {
@@ -278,14 +278,14 @@ void mdaPiano::noteOn(VstInt32 note, VstInt32 velocity)
     if(note > 60) l += stretch * (float)k; //stretch
 
     s = size;
-    if(velocity > 40) s += (VstInt32)(sizevel * (float)(velocity - 40));
+    if(velocity > 40) s += (uint32_t)(sizevel * (float)(velocity - 40));
 
     k = 0;
     while(note > (kgrp[k].high + s)) k++;  //find keygroup
 
     l += (float)(note - kgrp[k].root); //pitch
     l = 22050.0f * iFs * (float)exp(0.05776226505 * l);
-    voice[vl].delta = (VstInt32)(65536.0f * l);
+    voice[vl].delta = (uint32_t)(65536.0f * l);
     voice[vl].frac = 0;
     voice[vl].pos = kgrp[k].pos;
     voice[vl].end = kgrp[k].end;
@@ -326,11 +326,11 @@ void mdaPiano::noteOn(VstInt32 note, VstInt32 velocity)
 }
 
 
-VstInt32 mdaPiano::processEvents(VstEvents* ev)
+uint32_t mdaPiano::processEvents(VstEvents* ev)
 {
-  VstInt32 npos=0;
+  uint32_t npos=0;
 
-  for (VstInt32 i=0; i<ev->numEvents; i++)
+  for (uint32_t i=0; i<ev->numEvents; i++)
   {
     if((ev->events[i])->type != kVstMidiType) continue;
     VstMidiEvent* event = (VstMidiEvent*)ev->events[i];
@@ -376,7 +376,7 @@ VstInt32 mdaPiano::processEvents(VstEvents* ev)
           default:  //all notes off
             if(midiData[1]>0x7A)
             {
-              for(VstInt32 v=0; v<NVOICES; v++) voice[v].dec=0.99f;
+              for(uint32_t v=0; v<NVOICES; v++) voice[v].dec=0.99f;
               sustain = 0;
               muff = 160.0f;
             }

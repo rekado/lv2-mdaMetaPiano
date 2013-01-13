@@ -3,9 +3,9 @@
 #ifndef __mdaPiano__
 #define __mdaPiano__
 
-#include <string.h>
-
+#pragma GCC system_header
 #include <lv2synth.hpp>
+#include <string.h>
 
 #define NPARAMS 12       //number of parameters
 #define NPROGS   8       //number of programs
@@ -30,11 +30,11 @@ private:
 
 struct VOICE  //voice state
 {
-  VstInt32  delta;  //sample playback
-  VstInt32  frac;
-  VstInt32  pos;
-  VstInt32  end;
-  VstInt32  loop;
+  uint32_t  delta;  //sample playback
+  uint32_t  frac;
+  uint32_t  pos;
+  uint32_t  end;
+  uint32_t  loop;
   
   float env;  //envelope
   float dec;
@@ -45,17 +45,17 @@ struct VOICE  //voice state
 
   float outl;
   float outr;
-  VstInt32  note; //remember what note triggered this
+  uint32_t  note; //remember what note triggered this
 };
 
 
 struct KGRP  //keygroup
 {
-  VstInt32  root;  //MIDI root note
-  VstInt32  high;  //highest note
-  VstInt32  pos;
-  VstInt32  end;
-  VstInt32  loop;
+  uint32_t  root;  //MIDI root note
+  uint32_t  high;  //highest note
+  uint32_t  pos;
+  uint32_t  end;
+  uint32_t  loop;
 };
 
 class mdaPiano : public LV2::Synth<mdaPianoVoice, mdaPiano> {
@@ -63,33 +63,33 @@ public:
   mdaPiano(double rate);
   ~mdaPiano();
 
-  virtual void process(float **inputs, float **outputs, VstInt32 sampleframes);
-  virtual void processReplacing(float **inputs, float **outputs, VstInt32 sampleframes);
-  virtual VstInt32 processEvents(VstEvents* events);
+  virtual void process(float **inputs, float **outputs, uint32_t sampleframes);
+  virtual void processReplacing(float **inputs, float **outputs, uint32_t sampleframes);
+  virtual uint32_t processEvents(VstEvents* events);
 
-  virtual void setParameter(VstInt32 index, float value);
+  virtual void setParameter(uint32_t index, float value);
   virtual void resume();
 
 
 private:
   void update();  //my parameter update
-  void noteOn(VstInt32 note, VstInt32 velocity);
+  void noteOn(uint32_t note, uint32_t velocity);
 
   float param[NPARAMS];
   float Fs, iFs;
 
   #define EVENTBUFFER 120
   #define EVENTS_DONE 99999999
-  VstInt32 notes[EVENTBUFFER + 8];  //list of delta|note|velocity for current block
+  uint32_t notes[EVENTBUFFER + 8];  //list of delta|note|velocity for current block
 
   ///global internal variables
   KGRP  kgrp[16];
   VOICE voice[NVOICES];
-  VstInt32  activevoices, poly, cpos;
+  uint32_t activevoices, poly, cpos;
   short *waves;
-  VstInt32  cmax;
+  uint32_t cmax;
   float *comb, cdep, width, trim;
-  VstInt32  size, sustain;
+  uint32_t size, sustain;
   float tune, fine, random, stretch;
   float muff, muffvel, sizevel, velsens, volume;
 };

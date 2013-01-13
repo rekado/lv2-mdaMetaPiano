@@ -5,8 +5,6 @@
 
 #include <string.h>
 
-#include "audioeffectx.h"
-
 #define NPARAMS 12       //number of parameters
 #define NPROGS   8       //number of programs
 #define NOUTS    2       //number of outputs
@@ -68,28 +66,15 @@ public:
   virtual void processReplacing(float **inputs, float **outputs, VstInt32 sampleframes);
   virtual VstInt32 processEvents(VstEvents* events);
 
-  virtual void setProgram(VstInt32 program);
-  virtual void setProgramName(char *name);
-  virtual void getProgramName(char *name);
   virtual void setParameter(VstInt32 index, float value);
-  virtual float getParameter(VstInt32 index);
-  virtual void getParameterLabel(VstInt32 index, char *label);
-  virtual void getParameterDisplay(VstInt32 index, char *text);
-  virtual void getParameterName(VstInt32 index, char *text);
-  virtual void setBlockSize(VstInt32 blockSize);
   virtual void resume();
-
-  virtual bool copyProgram (VstInt32 destination);
 
 
 private:
   void update();  //my parameter update
   void noteOn(VstInt32 note, VstInt32 velocity);
-  void fillpatch(VstInt32 p, char *name, float p0, float p1, float p2, float p3, float p4,
-                 float p5, float p6, float p7, float p8, float p9, float p10,float p11);
 
   float param[NPARAMS];
-  mdaPianoProgram* programs;
   float Fs, iFs;
 
   #define EVENTBUFFER 120

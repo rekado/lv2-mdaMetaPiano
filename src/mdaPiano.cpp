@@ -21,11 +21,6 @@
 #define STRING_BUF 2048
 static const char* sample_file = "samples.raw";
 
-AudioEffect *createEffectInstance(audioMasterCallback audioMaster)
-{
-  return new mdaPiano(audioMaster);
-}
-
 mdaPianoProgram::mdaPianoProgram()
 {
   param[0]  = 0.50f; //Decay
@@ -134,8 +129,6 @@ void mdaPiano::resume()
   iFs = 1.0f / Fs;
   if(Fs > 64000.0f) cmax = 0xFF; else cmax = 0x7F;
   memset(comb, 0, sizeof(float) * 256);
-
-  DECLARE_VST_DEPRECATED (wantEvents) ();
 }
 
 
@@ -146,104 +139,10 @@ mdaPiano::~mdaPiano ()  //destroy any buffers...
 }
 
 
-void mdaPiano::setProgram(VstInt32 program)
-{
-  curProgram = program;
-  update();
-}
-
-
 void mdaPiano::setParameter(VstInt32 index, float value)
 {
   programs[curProgram].param[index] = value;
   update();
-}
-
-
-void mdaPiano::fillpatch(VstInt32 p, char *name, float p0, float p1, float p2, float p3, float p4,
-                      float p5, float p6, float p7, float p8, float p9, float p10,float p11)
-{
-  strcpy(programs[p].name, name);
-  programs[p].param[0] = p0;  programs[p].param[1] = p1;
-  programs[p].param[2] = p2;  programs[p].param[3] = p3;
-  programs[p].param[4] = p4;  programs[p].param[5] = p5;
-  programs[p].param[6] = p6;  programs[p].param[7] = p7;
-  programs[p].param[8] = p8;  programs[p].param[9] = p9;
-  programs[p].param[10]= p10; programs[p].param[11] = p11;
-}
-
-
-float mdaPiano::getParameter(VstInt32 index)     { return programs[curProgram].param[index]; }
-void  mdaPiano::setProgramName(char *name)   { strcpy(programs[curProgram].name, name); }
-void  mdaPiano::getProgramName(char *name)   { strcpy(name, programs[curProgram].name); }
-void  mdaPiano::setBlockSize(VstInt32 blockSize) {  AudioEffectX::setBlockSize(blockSize); }
-
-
-bool mdaPiano::copyProgram(VstInt32 destination)
-{
-  if(destination<NPROGS)
-  {
-    programs[destination] = programs[curProgram];
-    return true;
-  }
-  return false;
-}
-
-
-void mdaPiano::getParameterName(VstInt32 index, char *label)
-{
-  switch (index)
-  {
-    case  0: strcpy(label, "Envelope Decay"); break;
-    case  1: strcpy(label, "Envelope Release"); break;
-    case  2: strcpy(label, "Hardness Offset"); break;
-
-    case  3: strcpy(label, "Velocity to Hardness"); break;
-    case  4: strcpy(label, "Muffling Filter"); break;
-    case  5: strcpy(label, "Velocity to Muffling"); break;
-
-    case  6: strcpy(label, "Velocity Sensitivity"); break;
-    case  7: strcpy(label, "Stereo Width"); break;
-    case  8: strcpy(label, "Polyphony"); break;
-
-    case  9: strcpy(label, "Fine Tuning"); break;
-    case 10: strcpy(label, "Random Detuning"); break;
-    default: strcpy(label, "Stretch Tuning"); break;
-   }
-}
-
-
-void mdaPiano::getParameterDisplay(VstInt32 index, char *text)
-{
-  char string[16];
-  float * param = programs[curProgram].param;
-
-  switch(index)
-  {
-    case  4: sprintf(string, "%.0f", 100.0f - 100.0f * param[index]); break;
-    case  7: sprintf(string, "%.0f", 200.0f * param[index]); break;
-    case  8: sprintf(string, "%d", poly); break;
-    case 10: sprintf(string, "%.1f",  50.0f * param[index] * param[index]); break;
-    case  2:
-    case  9:
-    case 11: sprintf(string, "%+.1f", 100.0f * param[index] -  50.0f); break;
-    default: sprintf(string, "%.0f", 100.0f * param[index]);
-  }
-  string[8] = 0;
-  strcpy(text, (char *)string);
-}
-
-
-void mdaPiano::getParameterLabel(VstInt32 index, char *label)
-{
-  switch(index)
-  {
-    case  8: strcpy(label, "voices"); break;
-    case  9:
-    case 10:
-    case 11: strcpy(label, "cents"); break;
-    default: strcpy(label, "%");
-  }
 }
 
 

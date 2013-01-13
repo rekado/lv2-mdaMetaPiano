@@ -1,9 +1,17 @@
-//
-// VST2 Plug-in: "mda Piano" v1.0
-//
-// Copyright(c)1999-2000 Paul Kellett (maxim digital audio)
-// Based on VST2 SDK (c)1996-1999 Steinberg Soft und Hardware GmbH, All Rights Reserved
-//
+/* ==================================================
+ * LV2 port of the famous mda Piano VSTi
+ * ==================================================
+ *
+ * Port
+ *   Author:    Ricardo Wurmus (rekado)
+ *   Based on:  mda-vst-src-2010-02-14.zip
+ *
+ * mda Piano v1.0
+ *   Copyright(c)1999-2000 Paul Kellett (maxim digital audio)
+ *   Based on VST2 SDK (c)1996-1999 Steinberg Soft und Hardware GmbH, All Rights Reserved
+ *
+ * ==================================================
+ */
 
 #include "mdaPianoData.h"
 #include "mdaPiano.h"

@@ -98,8 +98,13 @@ void mdaPiano::handle_midi(uint32_t size, unsigned char* data) {
       {
         case 0x01:  //mod wheel
         case 0x43:  //soft pedal
-          muff = 0.01f * (float)((127 - data[2]) * (127 - data[2]));
-          break;
+          {
+            float muff = 0.01f * (float)((127 - data[2]) * (127 - data[2]));
+            for (unsigned i = 0; i < NVOICES; ++i) {
+              voices[i]->set_muff(muff);
+            }
+            break;
+          }
 
         case 0x07:  //volume
           setVolume(0.00002f * (float)(data[2] * data[2]));

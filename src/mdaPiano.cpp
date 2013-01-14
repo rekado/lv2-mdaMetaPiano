@@ -41,7 +41,6 @@ mdaPiano::mdaPiano(double rate)
   comb = new float[256];
 
   update();
-  suspend();
 }
 
 

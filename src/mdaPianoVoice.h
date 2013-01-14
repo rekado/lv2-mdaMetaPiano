@@ -50,6 +50,7 @@ class mdaPianoVoice : public LV2::Voice {
 
   public:
     mdaPianoVoice(double, short*, KGRP*);
+    void set_sustain(unsigned short v) { sustain = v; }
     void set_volume(float v) { volume = v; }
     void set_muff(float v) { muff = v; }
 

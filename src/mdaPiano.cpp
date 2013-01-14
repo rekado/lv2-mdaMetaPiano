@@ -144,10 +144,13 @@ void mdaPiano::handle_midi(uint32_t size, unsigned char* data) {
         case 0x40:  //sustain pedal
         case 0x42:  //sustenuto pedal
           sustain = data[2] & 0x40;
-          if(sustain==0)
-          {
-            notes[npos++] = SUSTAIN; //end all sustained notes
-            notes[npos++] = 0;
+
+          for (unsigned i = 0; i < NVOICES; ++i) {
+            voices[i]->set_sustain(sustain);
+            //if pedal was released: dampen sustained notes
+            if((sustain==0) && (voices[i]->is_sustained())) {
+              voices[i]->release(0);
+            }
           }
           break;
 

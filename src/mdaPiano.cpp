@@ -66,15 +66,6 @@ void mdaPiano::update()  //parameter change
 }
 
 
-void mdaPiano::resume()
-{
-  Fs = getSampleRate();
-  iFs = 1.0f / Fs;
-  if(Fs > 64000.0f) cmax = 0xFF; else cmax = 0x7F;
-  memset(comb, 0, sizeof(float) * 256);
-}
-
-
 void mdaPiano::setParameter(uint32_t index, float value)
 {
   programs[curProgram].param[index] = value;

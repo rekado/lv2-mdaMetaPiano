@@ -22,7 +22,6 @@ public:
   virtual uint32_t processEvents(VstEvents* events);
 
   virtual void setParameter(uint32_t index, float value);
-  virtual void resume();
 
 
 private:

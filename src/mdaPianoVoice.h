@@ -46,6 +46,7 @@ class mdaPianoVoice : public LV2::Voice {
     mdaPianoVoice(double, short*, KGRP*);
 
     float p_helper(unsigned short, Param);
+    void update(Param); // recalculates internal variables
     void reset(void);
 };
 

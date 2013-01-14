@@ -43,26 +43,11 @@ mdaPiano::mdaPiano(double rate)
   update();
 }
 
-
-void mdaPiano::update()  //parameter change
-{
-  float * param = programs[curProgram].param;
-  size = (uint32_t)(12.0f * param[2] - 6.0f);
-  sizevel = 0.12f * param[3];
-  muffvel = param[5] * param[5] * 5.0f;
-
-  velsens = 1.0f + param[6] + param[6];
-  if(param[6] < 0.25f) velsens -= 0.75f - 3.0f * param[6];
-
-  fine = param[9] - 0.5f;
-  random = 0.077f * param[10] * param[10];
-  stretch = 0.000434f * (param[11] - 0.5f);
-
-  cdep = param[7] * param[7];
-  trim = 1.50f - 0.79f * cdep;
-  width = 0.04f * param[7];  if(width > 0.03f) width = 0.03f;
-
-  poly = 8 + (uint32_t)(24.9f * param[8]);
+//parameter change
+void mdaPiano::update() {
+  for (uint32_t v=0; v<NVOICES; ++v) {
+    voices[v]->update(Current);
+  }
 }
 
 

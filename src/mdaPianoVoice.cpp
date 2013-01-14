@@ -205,3 +205,26 @@ if(!(r > -2.0f) || !(r < 2.0f))
   for(v=0; v<activevoices; v++) if(voice[v].env < SILENCE) voice[v] = voice[--activevoices];
   notes[0] = EVENTS_DONE;  //mark events buffer as done
 }
+
+
+void mdaPianoVoice::update(Param par)
+{
+  //TODO: use local copy
+  float * param = programs[curProgram].param;
+  size = (uint32_t)(12.0f * param[2] - 6.0f);
+  sizevel = 0.12f * param[3];
+  muffvel = param[5] * param[5] * 5.0f;
+
+  velsens = 1.0f + param[6] + param[6];
+  if(param[6] < 0.25f) velsens -= 0.75f - 3.0f * param[6];
+
+  fine = param[9] - 0.5f;
+  random = 0.077f * param[10] * param[10];
+  stretch = 0.000434f * (param[11] - 0.5f);
+
+  cdep = param[7] * param[7];
+  trim = 1.50f - 0.79f * cdep;
+  width = 0.04f * param[7];  if(width > 0.03f) width = 0.03f;
+
+  poly = 8 + (uint32_t)(24.9f * param[8]);
+}

@@ -21,6 +21,7 @@ class mdaPianoVoice : public LV2::Voice {
     short *waves;
     float default_preset[NPARAMS]; // contains the default preset
     short sustain;
+    float volume;
 
     // voice state
     uint32_t  delta;  //sample playback
@@ -46,6 +47,7 @@ class mdaPianoVoice : public LV2::Voice {
 
   public:
     mdaPianoVoice(double, short*, KGRP*);
+    void set_volume(float v) { volume = v; }
 
     float p_helper(unsigned short, Param);
     void update(Param); // recalculates internal variables

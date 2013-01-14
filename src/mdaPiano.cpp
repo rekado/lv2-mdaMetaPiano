@@ -52,6 +52,13 @@ void mdaPiano::update() {
 }
 
 
+void mdaPiano::setVolume(float value)
+{
+  for (uint32_t v=0; v<NVOICES; ++v)
+    voices[v]->set_volume(value);
+}
+
+
 void mdaPiano::setParameter(unsigned char id, float value)
 {
   if(id>=NPARAMS)
@@ -95,7 +102,7 @@ void mdaPiano::handle_midi(uint32_t size, unsigned char* data) {
           break;
 
         case 0x07:  //volume
-          volume = 0.00002f * (float)(data[2] * data[2]);
+          setVolume(0.00002f * (float)(data[2] * data[2]));
           break;
 
         case 0x40:  //sustain pedal

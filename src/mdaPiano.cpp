@@ -51,6 +51,30 @@ void mdaPiano::update() {
 }
 
 
+unsigned mdaPiano::find_free_voice(unsigned char key, unsigned char velocity) {
+  //is this a retriggered note during sustain?
+  if (sustain) {
+    for (unsigned i = 0; i < NVOICES; ++i) {
+      if ((voices[i]->get_key() == key) && (voices[i]->is_sustained()))
+        return i;
+    }
+  }
+
+  //take the next free voice if
+  // ... notes are sustained but not this new one
+  // ... notes are not sustained
+  for (unsigned i = 0; i < NVOICES; ++i) {
+    if (voices[i]->get_key() == LV2::INVALID_KEY)
+    {
+      return i;
+    }
+  }
+
+  //TODO: steal quietest note if all voices are used up
+  return 0;
+}
+
+
 void mdaPiano::setVolume(float value)
 {
   for (uint32_t v=0; v<NVOICES; ++v)

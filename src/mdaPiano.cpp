@@ -259,12 +259,13 @@ uint32_t mdaPiano::processEvents(VstEvents* ev)
             }
             break;
 
-          default:  //all notes off
-            if(midiData[1]>0x7A)
-            {
-              for(uint32_t v=0; v<NVOICES; v++) voice[v].dec=0.99f;
-              sustain = 0;
-              muff = 160.0f;
+          //all sound off
+          case 0x78:
+          //all notes off
+          case 0x7b:
+          default:
+            for(short v=0; v<NVOICES; v++) {
+              voices[v]->reset();
             }
             break;
         }

@@ -30,6 +30,7 @@ void mdaPianoVoice::reset() {
   dec = 0.99f;
   muff = 160.0f;
   volume = 0.2f;
+  sustain = 0;
 }
 
 

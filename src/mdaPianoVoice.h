@@ -20,6 +20,7 @@ class mdaPianoVoice : public LV2::Voice {
     KGRP  *kgrp;
     short *waves;
     float default_preset[NPARAMS]; // contains the default preset
+    short sustain;
 
     // voice state
     uint32_t  delta;  //sample playback

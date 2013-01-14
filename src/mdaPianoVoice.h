@@ -47,6 +47,7 @@ class mdaPianoVoice : public LV2::Voice {
 
     float p_helper(unsigned short, Param);
     void update(Param); // recalculates internal variables
+    void on(unsigned char key, unsigned char velocity);
     void reset(void);
 };
 

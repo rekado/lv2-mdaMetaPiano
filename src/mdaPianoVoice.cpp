@@ -42,7 +42,7 @@ float mdaPianoVoice::p_helper(unsigned short id, Param d) {
 }
 
 
-mdaPianoVoice::on(unsigned char note, unsigned char velocity)
+void mdaPianoVoice::on(unsigned char note, unsigned char velocity)
 {
   // TODO: replace with this voice's local copy
   float * param = programs[curProgram].param;

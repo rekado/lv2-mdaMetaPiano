@@ -116,14 +116,28 @@ void mdaPianoVoice::on(unsigned char note, unsigned char velocity)
     // TODO: move the loop to mdaPiano.cpp
     for(v=0; v<NVOICES; v++) if(voice[v].note==note) //any voices playing that note?
     {
-      if(sustain==0)
-      {
-        if(note < 94 || note == SUSTAIN) //no release on highest notes
-          voice[v].dec = (float)exp(-iFs * exp(2.0 + 0.017 * (double)note - 2.0 * param[1]));
-      }
-      else voice[v].note = SUSTAIN;
+      release(0);
     }
   }
+}
+
+
+void mdaPianoVoice::release(unsigned char velocity)
+{
+  if(sustain==0) {
+    //no release on highest notes
+    if(note < 94 || note == SUSTAIN) {
+      dec = (float)exp(-iFs * exp(2.0 + 0.017 * (double)note - 2.0 * *p(p_envelope_release)));
+    }
+  } else {
+    note = SUSTAIN;
+  }
+
+  //Mark the voice to be turned off later. It may not be set to
+  //INVALID_KEY yet, because the release sound still needs to be
+  //rendered.  m_key is finally set to INVALID_KEY by 'render' when
+  //env < SILENCE
+  m_key = SUSTAIN;
 }
 
 

@@ -56,6 +56,7 @@ class mdaPianoVoice : public LV2::Voice {
     float p_helper(unsigned short, Param);
     void update(Param); // recalculates internal variables
     void on(unsigned char key, unsigned char velocity);
+    void release(unsigned char velocity);
     void reset(void);
     bool is_sustained(void) { return (note == SUSTAIN); }
     unsigned char get_key(void) const { return m_key; }

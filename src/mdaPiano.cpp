@@ -73,73 +73,64 @@ void mdaPiano::setParameter(uint32_t index, float value)
 }
 
 
-uint32_t mdaPiano::processEvents(VstEvents* ev)
-{
-  uint32_t npos=0;
+void mdaPiano::handle_midi(uint32_t size, unsigned char* data) {
+#ifdef DEBUG
+  printf("%d\n", data[1]);
+#endif
 
-  for (uint32_t i=0; i<ev->numEvents; i++)
+  //discard invalid midi messages
+  if (size != 3)
+    return;
+
+  //receive on all channels
+  switch(data[0] & 0xf0)
   {
-    if((ev->events[i])->type != kVstMidiType) continue;
-    VstMidiEvent* event = (VstMidiEvent*)ev->events[i];
-    char* midiData = event->midiData;
+    case 0x80: //note off
+      notes[npos++] = data[1] & 0x7F; //note
+      notes[npos++] = 0;                  //vel
+      break;
 
-    switch(midiData[0] & 0xf0) //status byte (all channels)
-    {
-      case 0x80: //note off
-        notes[npos++] = event->deltaFrames; //delta
-        notes[npos++] = midiData[1] & 0x7F; //note
-        notes[npos++] = 0;                  //vel
-        break;
+    case 0x90: //note on
+      notes[npos++] = data[1] & 0x7F; //note
+      notes[npos++] = data[2] & 0x7F; //vel
+      break;
 
-      case 0x90: //note on
-        notes[npos++] = event->deltaFrames; //delta
-        notes[npos++] = midiData[1] & 0x7F; //note
-        notes[npos++] = midiData[2] & 0x7F; //vel
-        break;
+    case 0xB0: //controller
+      switch(data[1])
+      {
+        case 0x01:  //mod wheel
+        case 0x43:  //soft pedal
+          muff = 0.01f * (float)((127 - data[2]) * (127 - data[2]));
+          break;
 
-      case 0xB0: //controller
-        switch(midiData[1])
-        {
-          case 0x01:  //mod wheel
-          case 0x43:  //soft pedal
-            muff = 0.01f * (float)((127 - midiData[2]) * (127 - midiData[2]));
-            break;
+        case 0x07:  //volume
+          volume = 0.00002f * (float)(data[2] * data[2]);
+          break;
 
-          case 0x07:  //volume
-            volume = 0.00002f * (float)(midiData[2] * midiData[2]);
-            break;
+        case 0x40:  //sustain pedal
+        case 0x42:  //sustenuto pedal
+          sustain = data[2] & 0x40;
+          if(sustain==0)
+          {
+            notes[npos++] = SUSTAIN; //end all sustained notes
+            notes[npos++] = 0;
+          }
+          break;
 
-          case 0x40:  //sustain pedal
-          case 0x42:  //sustenuto pedal
-            sustain = midiData[2] & 0x40;
-            if(sustain==0)
-            {
-              notes[npos++] = event->deltaFrames;
-              notes[npos++] = SUSTAIN; //end all sustained notes
-              notes[npos++] = 0;
-            }
-            break;
+        //all sound off
+        case 0x78:
+        //all notes off
+        case 0x7b:
+        default:
+          for(short v=0; v<NVOICES; v++) {
+            voices[v]->reset();
+          }
+          break;
+      }
+      break;
 
-          //all sound off
-          case 0x78:
-          //all notes off
-          case 0x7b:
-          default:
-            for(short v=0; v<NVOICES; v++) {
-              voices[v]->reset();
-            }
-            break;
-        }
-        break;
-
-      default: break;
-    }
-
-    if(npos>EVENTBUFFER) npos -= 3; //discard events if buffer full!!
-    event++; //?
+    default: break;
   }
-  notes[npos] = EVENTS_DONE;
-  return 1;
 }
 
 

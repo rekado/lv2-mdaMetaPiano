@@ -19,8 +19,7 @@ public:
   void load_kgrp(KGRP*);
   void load_samples(short**);
 
-  virtual uint32_t processEvents(VstEvents* events);
-
+  void handle_midi(uint32_t size, unsigned char* data);
   virtual void setParameter(uint32_t index, float value);
 
 

@@ -31,6 +31,11 @@ mdaPiano::mdaPiano(double rate)
   load_samples(&waves);
   load_kgrp(kgrp);
 
+  for(uint32_t i=0; i<NVOICES; ++i) {
+    voices[i] = new mdaPianoVoice(rate, waves, kgrp);
+    add_voices(voices[i]);
+  }
+
   notes[0] = EVENTS_DONE;
   cpos = sustain = activevoices = 0;
   comb = new float[256];

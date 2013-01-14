@@ -40,7 +40,7 @@ private:
 
   ///global internal variables
   KGRP  kgrp[16];
-  VOICE voice[NVOICES];
+  mdaPianoVoice *voices[NVOICES];
   uint32_t activevoices, poly, cpos;
   short *waves;
   uint32_t cmax;

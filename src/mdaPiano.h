@@ -1,64 +1,13 @@
 //See associated .cpp file for copyright and other info
 
-#ifndef __mdaPiano__
-#define __mdaPiano__
+#ifndef MDA_PIANO_H
+#define MDA_PIANO_H
 
 #pragma GCC system_header
 #include "mdaPianoVoice.h"
 #include "mdaPiano.peg"
 #include <lv2synth.hpp>
-#include <string.h>
 
-#define NPARAMS 12       //number of parameters
-#define NPROGS   8       //number of programs
-#define NOUTS    2       //number of outputs
-#define NVOICES 32       //max polyphony
-#define SUSTAIN 128
-#define SILENCE 0.0001f  //voice choking
-#define WAVELEN 586348   //wave data bytes
-
-class mdaPianoProgram
-{
-  friend class mdaPiano;
-public:
-  mdaPianoProgram();
-  ~mdaPianoProgram() {}
-
-private:
-  float param[NPARAMS];
-  char  name[24];
-};
-
-
-struct VOICE  //voice state
-{
-  uint32_t  delta;  //sample playback
-  uint32_t  frac;
-  uint32_t  pos;
-  uint32_t  end;
-  uint32_t  loop;
-  
-  float env;  //envelope
-  float dec;
-
-  float f0;   //first-order LPF
-  float f1;
-  float ff;
-
-  float outl;
-  float outr;
-  uint32_t  note; //remember what note triggered this
-};
-
-
-struct KGRP  //keygroup
-{
-  uint32_t  root;  //MIDI root note
-  uint32_t  high;  //highest note
-  uint32_t  pos;
-  uint32_t  end;
-  uint32_t  loop;
-};
 
 class mdaPiano : public LV2::Synth<mdaPianoVoice, mdaPiano> {
 public:

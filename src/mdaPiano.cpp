@@ -13,6 +13,7 @@
  * ==================================================
  */
 
+#include "mdaPianoCommon.h"
 #include "mdaPiano.h"
 
 #include <stdio.h>

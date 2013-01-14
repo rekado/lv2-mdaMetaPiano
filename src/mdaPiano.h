@@ -19,7 +19,6 @@ public:
   void load_kgrp(KGRP*);
   void load_samples(short**);
 
-  virtual void process(float **inputs, float **outputs, uint32_t sampleframes);
   virtual uint32_t processEvents(VstEvents* events);
 
   virtual void setParameter(uint32_t index, float value);

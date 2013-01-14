@@ -21,55 +21,16 @@
 #define STRING_BUF 2048
 static const char* sample_file = "samples.raw";
 
-mdaPianoProgram::mdaPianoProgram()
-{
-  param[0]  = 0.50f; //Decay
-  param[1]  = 0.50f; //Release
-  param[2]  = 0.50f; //Hardness
-
-  param[3]  = 0.50f; //Vel>Hard
-  param[4]  = 1.00f; //Muffle
-  param[5]  = 0.50f; //Vel>Muff
-
-  param[6]  = 0.33f; //Vel Curve
-  param[7]  = 0.50f; //Stereo
-  param[8]  = 0.33f; //Max Poly
-
-  param[9]  = 0.50f; //Tune
-  param[10] = 0.00f; //Random
-  param[11] = 0.50f; //Stretch
-
-  strcpy (name, "mda Piano");
-}
-
 
 mdaPiano::mdaPiano(double rate)
   : LV2::Synth<mdaPianoVoice, mdaPiano>(NPROGS, NPARAMS)
 {
-  Fs = 44100.0f;  iFs = 1.0f/Fs;  cmax = 0x7F;  //just in case...
-
-  programs = new mdaPianoProgram[NPROGS];
-  if(programs)
-  {
-    //fill patches...
-    uint32_t i=0;
-    //TODO: load initial values from default preset
-    fillpatch(i++, "mda Piano",        0.500f, 0.500f, 0.500f, 0.5f, 0.803f, 0.251f, 0.376f, 0.500f, 0.330f, 0.500f, 0.246f, 0.500f);
-    setProgram(0);
-  }
+  cmax = 0x7F;  //just in case...
 
   load_samples(&waves);
   load_kgrp(kgrp);
 
-  //initialise...
-  for(uint32_t v=0; v<NVOICES; v++)
-  {
-    voice[v].env = 0.0f;
-    voice[v].dec = 0.99f; //all notes off
-  }
   notes[0] = EVENTS_DONE;
-  volume = 0.2f;
-  muff = 160.0f;
   cpos = sustain = activevoices = 0;
   comb = new float[256];
 

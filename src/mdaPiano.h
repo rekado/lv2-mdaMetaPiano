@@ -4,6 +4,8 @@
 #define __mdaPiano__
 
 #pragma GCC system_header
+#include "mdaPianoVoice.h"
+#include "mdaPiano.peg"
 #include <lv2synth.hpp>
 #include <string.h>
 

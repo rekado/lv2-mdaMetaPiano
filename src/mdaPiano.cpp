@@ -15,6 +15,7 @@
 
 #include "mdaPianoCommon.h"
 #include "mdaPiano.h"
+#include <cstdlib> //for exit
 
 #include <stdio.h>
 #include <math.h>

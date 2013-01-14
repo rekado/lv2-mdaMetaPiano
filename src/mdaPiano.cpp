@@ -346,10 +346,6 @@ uint32_t mdaPiano::processEvents(VstEvents* ev)
         }
         break;
 
-      case 0xC0: //program change
-        if(midiData[1]<NPROGS) setProgram(midiData[1]);
-        break;
-
       default: break;
     }
 

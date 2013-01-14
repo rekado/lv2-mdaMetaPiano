@@ -31,6 +31,7 @@ void mdaPianoVoice::reset() {
   muff = 160.0f;
   volume = 0.2f;
   sustain = 0;
+  m_key = LV2::INVALID_KEY;
 }
 
 
@@ -44,6 +45,9 @@ float mdaPianoVoice::p_helper(unsigned short id, Param d) {
 
 void mdaPianoVoice::on(unsigned char note, unsigned char velocity)
 {
+  // store key that turned this voice on (used in 'get_key')
+  m_key = key;
+
   // TODO: replace with this voice's local copy
   float * param = programs[curProgram].param;
   float l=99.0f;

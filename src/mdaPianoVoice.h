@@ -41,6 +41,8 @@ class mdaPianoVoice : public LV2::Voice {
     uint32_t  note; //remember what note triggered this
     // end of voice state
 
+  protected:
+    unsigned char m_key;
 
   public:
     mdaPianoVoice(double, short*, KGRP*);
@@ -49,6 +51,7 @@ class mdaPianoVoice : public LV2::Voice {
     void update(Param); // recalculates internal variables
     void on(unsigned char key, unsigned char velocity);
     void reset(void);
+    unsigned char get_key(void) const { return m_key; }
 };
 
 #endif

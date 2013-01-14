@@ -12,7 +12,12 @@
 class mdaPiano : public LV2::Synth<mdaPianoVoice, mdaPiano> {
 public:
   mdaPiano(double rate);
-  ~mdaPiano();
+  ~mdaPiano() {
+    free(waves);
+  }
+
+  void load_kgrp(KGRP*);
+  void load_samples(short**);
 
   virtual void process(float **inputs, float **outputs, uint32_t sampleframes);
   virtual void processReplacing(float **inputs, float **outputs, uint32_t sampleframes);

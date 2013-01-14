@@ -71,13 +71,6 @@ void mdaPiano::resume()
 }
 
 
-mdaPiano::~mdaPiano ()  //destroy any buffers...
-{
-  if(programs) delete [] programs;
-  if(comb) delete[] comb;
-}
-
-
 void mdaPiano::setParameter(uint32_t index, float value)
 {
   programs[curProgram].param[index] = value;

@@ -52,10 +52,15 @@ void mdaPiano::update() {
 }
 
 
-void mdaPiano::setParameter(uint32_t index, float value)
+void mdaPiano::setParameter(unsigned char id, float value)
 {
-  programs[curProgram].param[index] = value;
+  if(id>=NPARAMS)
+    return;
+  *p(id+PARAM_OFFSET) = value;
   update();
+#ifdef DEBUG
+  printf("changed %i to %f\n", id, value);
+#endif
 }
 
 

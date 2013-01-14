@@ -20,7 +20,7 @@ public:
   void load_samples(short**);
 
   void handle_midi(uint32_t size, unsigned char* data);
-  virtual void setParameter(uint32_t index, float value);
+  void setParameter(unsigned char, float);
 
 
 private:

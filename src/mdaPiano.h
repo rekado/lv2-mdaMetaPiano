@@ -38,13 +38,10 @@ private:
   ///global internal variables
   KGRP  kgrp[16];
   mdaPianoVoice *voices[NVOICES];
-  uint32_t activevoices, poly, cpos;
+  uint32_t activevoices;
   short *waves;
   uint32_t cmax;
-  float *comb, cdep, width, trim;
-  uint32_t size, sustain;
-  float tune, fine, random, stretch;
-  float muff, muffvel, sizevel, velsens, volume;
+  uint32_t sustain;
 };
 
 #endif

@@ -38,8 +38,7 @@ mdaPiano::mdaPiano(double rate)
   }
 
   notes[0] = EVENTS_DONE;
-  cpos = sustain = activevoices = 0;
-  comb = new float[256];
+  sustain = activevoices = 0;
 
   update();
 }

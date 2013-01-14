@@ -21,7 +21,10 @@ class mdaPianoVoice : public LV2::Voice {
     short *waves;
     float default_preset[NPARAMS]; // contains the default preset
     short sustain;
-    float volume, muff;
+    float *comb, cdep, width, trim;
+    float fine, random, stretch;
+    float volume, muff, muffvel, sizevel, velsens;
+    uint32_t cpos, size, poly;
 
     // voice state
     uint32_t  delta;  //sample playback

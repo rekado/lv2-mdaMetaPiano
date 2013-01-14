@@ -112,9 +112,13 @@ void mdaPiano::handle_midi(uint32_t size, unsigned char* data) {
       break;
 
     case 0x90: //note on
-      notes[npos++] = data[1] & 0x7F; //note
-      notes[npos++] = data[2] & 0x7F; //vel
-      break;
+      {
+        unsigned int v = find_free_voice(data[1], data[2]);
+        if (v < NVOICES) {
+          voices[v]->on(data[1], data[2]);
+        }
+        break;
+      }
 
     case 0xB0: //controller
       switch(data[1])

@@ -37,7 +37,6 @@ mdaPiano::mdaPiano(double rate)
 
   sustain = 0;
 
-  update();
 }
 
 //parameter change

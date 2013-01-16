@@ -22,6 +22,7 @@ mdaPianoVoice::mdaPianoVoice(double rate, short * samples, KGRP * master_kgrp) {
   default_preset[p_offset(p_stretch_tuning)]       = 0.500f;
 
   reset();
+  update(Default);
 }
 
 

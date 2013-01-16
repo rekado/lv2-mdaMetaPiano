@@ -4,7 +4,7 @@
 @prefix pset: <http://lv2plug.in/ns/ext/presets#> .
 @prefix pre:  <http://elephly.net/lv2/mdaPiano/presets#> .
 
-pre:default
+pre:dance
   a              pset:Preset ;
   rdfs:label     "Dance Piano" ;
   pset:appliesTo base:mdaPiano ;

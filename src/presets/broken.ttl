@@ -4,7 +4,7 @@
 @prefix pset: <http://lv2plug.in/ns/ext/presets#> .
 @prefix pre:  <http://elephly.net/lv2/mdaPiano/presets#> .
 
-pre:default
+pre:broken
   a              pset:Preset ;
   rdfs:label     "Broken Piano" ;
   pset:appliesTo base:mdaPiano ;

@@ -37,6 +37,7 @@ mdaPiano::mdaPiano(double rate)
 
   sustain = 0;
 
+  add_audio_outputs(p_left, p_right);
 }
 
 //parameter change

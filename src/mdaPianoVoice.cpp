@@ -200,6 +200,11 @@ r = 0.0f;
     p(p_left)[frame] += l + x;
     p(p_right)[frame] += r - x;
   }
+
+  // turn off further processing when the envelope has rendered the voice silent
+  if (env < SILENCE) {
+    m_key = LV2::INVALID_KEY;
+  }
 }
 
 

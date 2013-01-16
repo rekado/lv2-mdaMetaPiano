@@ -140,56 +140,52 @@ void mdaPianoVoice::release(unsigned char velocity)
 
 void mdaPianoVoice::render(uint32_t from, uint32_t to)
 {
-  uint32_t v;
   float x, l, r;
   uint32_t i;
 
   for (uint32_t frame = from; frame < to; ++frame) {
     l = r = 0.0f;
 
-    for(v=0; v<activevoices; v++)
-    {
-      frac += delta;  //integer-based linear interpolation
-      pos += frac >> 16;
-      frac &= 0xFFFF;
-      if(pos > end) pos -= loop;
+    frac += delta;  //integer-based linear interpolation
+    pos += frac >> 16;
+    frac &= 0xFFFF;
+    if(pos > end) pos -= loop;
 
-      i = waves[pos];
-      i = (i << 7) + (frac >> 9) * (waves[pos + 1] - i) + 0x40400000;
-      x = env * (*(float *)&i - 3.0f);  //fast int->float
+    i = waves[pos];
+    i = (i << 7) + (frac >> 9) * (waves[pos + 1] - i) + 0x40400000;
+    x = env * (*(float *)&i - 3.0f);  //fast int->float
 
-      /////////////////////
-      //TODO: This was used in processReplacing instead of the above
-      /*
-      //i = (i << 7) + (frac >> 9) * (waves[pos + 1] - i) + 0x40400000;   //not working on intel mac !?!
+    /////////////////////
+    //TODO: This was used in processReplacing instead of the above
+    /*
+    //i = (i << 7) + (frac >> 9) * (waves[pos + 1] - i) + 0x40400000;   //not working on intel mac !?!
 i = waves[pos] + ((frac * (waves[pos + 1] - waves[pos])) >> 16);
 x = env * (float)i / 32768.0f;
-      //x = env * (*(float *)&i - 3.0f);  //fast int->float
-      */
-      /////////////////////
+    //x = env * (*(float *)&i - 3.0f);  //fast int->float
+    */
+    /////////////////////
 
-      env = env * dec;  //envelope
-      f0 += ff * (x + f1 - f0);  //muffle filter
-      f1 = x;
+    env = env * dec;  //envelope
+    f0 += ff * (x + f1 - f0);  //muffle filter
+    f1 = x;
 
-      l += outl * f0;
-      r += outr * f0;
+    l += outl * f0;
+    r += outr * f0;
 
-      //TODO: this was used in processReplacing
-      /////////////////////
-      /*
+    //TODO: this was used in processReplacing
+    /////////////////////
+    /*
 if(!(l > -2.0f) || !(l < 2.0f))
 {
- printf("what is this shit?   %d,  %f,  %f\n", i, x, f0);
- l = 0.0f;
+printf("what is this shit?   %d,  %f,  %f\n", i, x, f0);
+l = 0.0f;
 }
 if(!(r > -2.0f) || !(r < 2.0f))
 {
- r = 0.0f;
+r = 0.0f;
 }
-      */
-      /////////////////////
-    }
+    */
+    /////////////////////
     comb[cpos] = l + r;
     ++cpos &= 0x7F;
     x = cdep * comb[cpos];  //stereo simulator
@@ -199,9 +195,6 @@ if(!(r > -2.0f) || !(r < 2.0f))
     p(p_left)[frame] += l + x;
     p(p_right)[frame] += r - x;
   }
-
-  // TODO: move this away
-  //for(v=0; v<activevoices; v++) if(voice[v].env < SILENCE) voice[v] = voice[--activevoices];
 }
 
 

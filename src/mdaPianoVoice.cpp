@@ -49,6 +49,7 @@ void mdaPianoVoice::on(unsigned char note, unsigned char velocity)
 {
   // store key that turned this voice on (used in 'get_key')
   m_key = note;
+  update(Current);
 
   float l=99.0f;
   uint32_t k, s;

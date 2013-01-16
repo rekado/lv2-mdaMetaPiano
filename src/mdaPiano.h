@@ -32,10 +32,6 @@ private:
   float param[NPARAMS];
   float Fs, iFs;
 
-  #define EVENTBUFFER 120
-  #define EVENTS_DONE 99999999
-  uint32_t notes[EVENTBUFFER + 8];  //list of delta|note|velocity for current block
-
   ///global internal variables
   KGRP  kgrp[16];
   mdaPianoVoice *voices[NVOICES];

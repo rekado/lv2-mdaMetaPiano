@@ -35,7 +35,6 @@ mdaPiano::mdaPiano(double rate)
     add_voices(voices[i]);
   }
 
-  notes[0] = EVENTS_DONE;
   sustain = 0;
 
   update();

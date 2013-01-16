@@ -21,7 +21,6 @@ mdaPianoVoice::mdaPianoVoice(double rate, short * samples, KGRP * master_kgrp) {
   default_preset[p_offset(p_random_detuning)]      = 0.246f;
   default_preset[p_offset(p_stretch_tuning)]       = 0.500f;
 
-  comb = new float[256];
   reset();
 }
 

@@ -61,6 +61,9 @@ class mdaPianoVoice : public LV2::Voice {
     void reset(void);
     bool is_sustained(void) { return (note == SUSTAIN); }
     unsigned char get_key(void) const { return m_key; }
+
+    // generates the sound for this voice
+    void render(uint32_t, uint32_t);
 };
 
 #endif

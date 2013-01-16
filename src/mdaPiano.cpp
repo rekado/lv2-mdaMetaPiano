@@ -228,3 +228,5 @@ void mdaPiano::load_samples(short **buffer)
   fclose (f);
   return;
 }
+
+static int _ = mdaPiano::register_class(p_uri);

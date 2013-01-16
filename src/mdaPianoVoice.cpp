@@ -123,11 +123,11 @@ void mdaPianoVoice::release(unsigned char velocity)
 {
   if(sustain==0) {
     //no release on highest notes
-    if(note < 94 || note == SUSTAIN) {
-      dec = (float)exp(-iFs * exp(2.0 + 0.017 * (double)note - 2.0 * *p(p_envelope_release)));
+    if(m_key < 94 || m_key == SUSTAIN) {
+      dec = (float)exp(-iFs * exp(2.0 + 0.017 * (double)m_key - 2.0 * *p(p_envelope_release)));
     }
   } else {
-    note = SUSTAIN;
+    m_key = SUSTAIN;
   }
 
   //Mark the voice to be turned off later. It may not be set to

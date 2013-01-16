@@ -50,8 +50,6 @@ void mdaPianoVoice::on(unsigned char note, unsigned char velocity)
   // store key that turned this voice on (used in 'get_key')
   m_key = note;
 
-  // TODO: replace with this voice's local copy
-  float * param = programs[curProgram].param;
   float l=99.0f;
   uint32_t  v, k, s;
 
@@ -93,7 +91,7 @@ void mdaPianoVoice::on(unsigned char note, unsigned char velocity)
 
     env = (0.5f + velsens) * (float)pow(0.0078f * velocity, velsens); //velocity
 
-    l = 50.0f + param[4] * param[4] * muff + muffvel * (float)(velocity - 64); //muffle
+    l = 50.0f + *p(p_muffling_filter) * *p(p_muffling_filter) * muff + muffvel * (float)(velocity - 64); //muffle
     if(l < (55.0f + 0.25f * (float)note)) l = 55.0f + 0.25f * (float)note;
     if(l > 210.0f) l = 210.0f;
     ff = l * l * iFs;
@@ -106,8 +104,8 @@ void mdaPianoVoice::on(unsigned char note, unsigned char velocity)
     outl = l + l - outr;
 
     if(note < 44) note = 44; //limit max decay length
-    l = 2.0f * param[0];
-    if(l < 1.0f) l += 0.25f - 0.5f * param[0];
+    l = 2.0f * *p(p_envelope_decay);
+    if(l < 1.0f) l += 0.25f - 0.5f * *p(p_envelope_decay);
     dec = (float)exp(-iFs * exp(-0.6 + 0.033 * (double)note - l));
   }
   else //note off

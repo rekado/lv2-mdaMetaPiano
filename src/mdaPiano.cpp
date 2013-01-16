@@ -52,8 +52,9 @@ unsigned mdaPiano::find_free_voice(unsigned char key, unsigned char velocity) {
   //is this a retriggered note during sustain?
   if (sustain) {
     for (unsigned i = 0; i < NVOICES; ++i) {
-      if ((voices[i]->get_key() == key) && (voices[i]->is_sustained()))
+      if ((voices[i]->get_key() == key) && (voices[i]->is_sustained())) {
         return i;
+      }
     }
   }
 

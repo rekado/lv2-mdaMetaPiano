@@ -145,43 +145,42 @@ void mdaPianoVoice::render(uint32_t from, uint32_t to)
   uint32_t i;
 
   for (uint32_t frame = from; frame < to; ++frame) {
-    VOICE *V = voice;
     l = r = 0.0f;
 
     for(v=0; v<activevoices; v++)
     {
-      V->frac += V->delta;  //integer-based linear interpolation
-      V->pos += V->frac >> 16;
-      V->frac &= 0xFFFF;
-      if(V->pos > V->end) V->pos -= V->loop;
+      frac += delta;  //integer-based linear interpolation
+      pos += frac >> 16;
+      frac &= 0xFFFF;
+      if(pos > end) pos -= loop;
 
-      i = waves[V->pos];
-      i = (i << 7) + (V->frac >> 9) * (waves[V->pos + 1] - i) + 0x40400000;
-      x = V->env * (*(float *)&i - 3.0f);  //fast int->float
+      i = waves[pos];
+      i = (i << 7) + (frac >> 9) * (waves[pos + 1] - i) + 0x40400000;
+      x = env * (*(float *)&i - 3.0f);  //fast int->float
 
       /////////////////////
       //TODO: This was used in processReplacing instead of the above
       /*
-      //i = (i << 7) + (V->frac >> 9) * (waves[V->pos + 1] - i) + 0x40400000;   //not working on intel mac !?!
-i = waves[V->pos] + ((V->frac * (waves[V->pos + 1] - waves[V->pos])) >> 16);
-x = V->env * (float)i / 32768.0f;
-      //x = V->env * (*(float *)&i - 3.0f);  //fast int->float
+      //i = (i << 7) + (frac >> 9) * (waves[pos + 1] - i) + 0x40400000;   //not working on intel mac !?!
+i = waves[pos] + ((frac * (waves[pos + 1] - waves[pos])) >> 16);
+x = env * (float)i / 32768.0f;
+      //x = env * (*(float *)&i - 3.0f);  //fast int->float
       */
       /////////////////////
 
-      V->env = V->env * V->dec;  //envelope
-      V->f0 += V->ff * (x + V->f1 - V->f0);  //muffle filter
-      V->f1 = x;
+      env = env * dec;  //envelope
+      f0 += ff * (x + f1 - f0);  //muffle filter
+      f1 = x;
 
-      l += V->outl * V->f0;
-      r += V->outr * V->f0;
+      l += outl * f0;
+      r += outr * f0;
 
       //TODO: this was used in processReplacing
       /////////////////////
       /*
 if(!(l > -2.0f) || !(l < 2.0f))
 {
- printf("what is this shit?   %d,  %f,  %f\n", i, x, V->f0);
+ printf("what is this shit?   %d,  %f,  %f\n", i, x, f0);
  l = 0.0f;
 }
 if(!(r > -2.0f) || !(r < 2.0f))
@@ -190,8 +189,6 @@ if(!(r > -2.0f) || !(r < 2.0f))
 }
       */
       /////////////////////
-
-      V++;
     }
     comb[cpos] = l + r;
     ++cpos &= cmax;

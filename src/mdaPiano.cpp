@@ -27,8 +27,6 @@ static const char* sample_file = "samples.raw";
 mdaPiano::mdaPiano(double rate)
   : LV2::Synth<mdaPianoVoice, mdaPiano>(p_n_ports, p_midi) {
 
-  cmax = 0x7F;  //just in case...
-
   load_samples(&waves);
   load_kgrp(kgrp);
 

@@ -41,7 +41,6 @@ private:
   mdaPianoVoice *voices[NVOICES];
   uint32_t activevoices;
   short *waves;
-  uint32_t cmax;
   uint32_t sustain;
 };
 

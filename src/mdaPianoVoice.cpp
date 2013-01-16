@@ -191,7 +191,7 @@ if(!(r > -2.0f) || !(r < 2.0f))
       /////////////////////
     }
     comb[cpos] = l + r;
-    ++cpos &= cmax;
+    ++cpos &= 0x7F;
     x = cdep * comb[cpos];  //stereo simulator
 
     // TODO: processReplacing simply assigned instead of adding

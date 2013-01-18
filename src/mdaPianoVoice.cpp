@@ -56,22 +56,6 @@ void mdaPianoVoice::on(unsigned char note, unsigned char velocity)
 
   if(velocity>0)
   {
-    // TODO: move this to mdaPiano.cpp
-    /*
-    if(activevoices < poly) //add a note
-    {
-      vl = activevoices;
-      activevoices++;
-    }
-    else //steal a note
-    {
-      for(v=0; v<poly; v++)  //find quietest voice
-      {
-        if(voice[v].env < l) { l = voice[v].env;  vl = v; }
-      }
-    }
-    */
-
     k = (note - 60) * (note - 60);
     l = fine + random * ((float)(k % 13) - 6.5f);  //random & fine tune
     if(note > 60) l += stretch * (float)k; //stretch
@@ -111,11 +95,7 @@ void mdaPianoVoice::on(unsigned char note, unsigned char velocity)
   }
   else //note off
   {
-    // TODO: move the loop to mdaPiano.cpp
-    //for(v=0; v<NVOICES; v++) if(voice[v].note==note) //any voices playing that note?
-    //{
-      release(0);
-    //}
+    release(0);
   }
 }
 

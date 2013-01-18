@@ -141,16 +141,6 @@ void mdaPianoVoice::render(uint32_t from, uint32_t to)
     i = (i << 7) + (frac >> 9) * (waves[pos + 1] - i) + 0x40400000;
     x = env * (*(float *)&i - 3.0f);  //fast int->float
 
-    /////////////////////
-    //TODO: This was used in processReplacing instead of the above
-    /*
-    //i = (i << 7) + (frac >> 9) * (waves[pos + 1] - i) + 0x40400000;   //not working on intel mac !?!
-i = waves[pos] + ((frac * (waves[pos + 1] - waves[pos])) >> 16);
-x = env * (float)i / 32768.0f;
-    //x = env * (*(float *)&i - 3.0f);  //fast int->float
-    */
-    /////////////////////
-
     env = env * dec;  //envelope
     f0 += ff * (x + f1 - f0);  //muffle filter
     f1 = x;
@@ -158,25 +148,10 @@ x = env * (float)i / 32768.0f;
     l += outl * f0;
     r += outr * f0;
 
-    //TODO: this was used in processReplacing
-    /////////////////////
-    /*
-if(!(l > -2.0f) || !(l < 2.0f))
-{
-printf("what is this shit?   %d,  %f,  %f\n", i, x, f0);
-l = 0.0f;
-}
-if(!(r > -2.0f) || !(r < 2.0f))
-{
-r = 0.0f;
-}
-    */
-    /////////////////////
     comb[cpos] = l + r;
     ++cpos &= 0x7F;
     x = cdep * comb[cpos];  //stereo simulator
 
-    // TODO: processReplacing simply assigned instead of adding
     // write to output
     p(p_left)[frame] += l + x;
     p(p_right)[frame] += r - x;

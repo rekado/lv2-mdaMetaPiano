@@ -21,17 +21,26 @@
 #include <math.h>
 
 #define STRING_BUF 2048
-static const char* sample_file = "samples.raw";
-
 
 mdaPiano::mdaPiano(double rate)
   : LV2::Synth<mdaPianoVoice, mdaPiano>(p_n_ports, p_midi) {
 
-  load_samples(&waves);
+  static const char* sample_names[] =
+    { "0c.raw", "0e.raw", "0g.raw"
+    , "1c.raw", "1e.raw", "1g.raw"
+    , "2c.raw", "2e.raw", "2g.raw"
+    , "3c.raw", "3e.raw", "3g.raw"
+    , "4c.raw", "4e.raw", "4a.raw"
+    };
+
+  for (unsigned char i=0; i<15; ++i) {
+    load_sample(&samples[i], sample_names[i]);
+  }
+
   load_kgrp(kgrp);
 
   for(uint32_t i=0; i<NVOICES; ++i) {
-    voices[i] = new mdaPianoVoice(rate, waves, kgrp);
+    voices[i] = new mdaPianoVoice(rate, samples, kgrp);
     add_voices(voices[i]);
   }
 
@@ -190,7 +199,7 @@ void mdaPiano::load_kgrp(KGRP *kgrp)
 }
 
 
-void mdaPiano::load_samples(short **buffer)
+void mdaPiano::load_sample(Sample *s, const char* name)
 {
   FILE *f;
   long num, size;
@@ -198,7 +207,7 @@ void mdaPiano::load_samples(short **buffer)
 
   strncpy(filepath, bundle_path(), STRING_BUF);
   strncat(filepath,
-          sample_file,
+          name,
           STRING_BUF - strlen(filepath));
   f = fopen(filepath, "rb");
   if (f == NULL) {
@@ -212,19 +221,23 @@ void mdaPiano::load_samples(short **buffer)
   rewind(f);
 
   // allocate memory to contain the whole file
-  *buffer = (short*) malloc (sizeof(short)*size);
-  if (*buffer == NULL) {
+  s->buffer = (short*) malloc (sizeof(short)*size);
+  if (s->buffer == NULL) {
     fputs("Memory error", stderr);
     exit(2);
   }
 
   // copy the file into the buffer
-  num = fread(*buffer, 1, size, f);
+  num = fread(s->buffer, 1, size, f);
   if (num != size) {
     fputs ("Reading error", stderr);
     exit (3);
   }
   fclose (f);
+
+  // 16 bit
+  s->size = size / 2;
+
   return;
 }
 

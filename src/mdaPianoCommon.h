@@ -12,10 +12,14 @@ struct KGRP  //keygroup
 {
   long root;  //MIDI root note
   long high;  //highest note
-  long pos;
-  long end;
   long loop;
 };
+
+typedef struct
+{
+  long size;     //length of sample data
+  short* buffer; //pointer to sample data
+} Sample;
 
 static float scale_midi_to_f(unsigned char data)
 {

@@ -1,11 +1,11 @@
 #include "mdaPianoVoice.h"
 
-mdaPianoVoice::mdaPianoVoice(double rate, short * samples, KGRP * master_kgrp) {
+mdaPianoVoice::mdaPianoVoice(double rate, Sample * master_samples, KGRP * master_kgrp) {
   //set tuning
   Fs = rate;
   iFs = 1.0f/Fs;
 
-  waves = samples;
+  samples = master_samples;
   kgrp  = master_kgrp;
 
   default_preset[p_offset(p_envelope_decay)]       = 0.500f;
@@ -65,14 +65,15 @@ void mdaPianoVoice::on(unsigned char note, unsigned char velocity)
 
     k = 0;
     while(note > (kgrp[k].high + s)) k++;  //find keygroup
+    sample_index = k; //store sample index
 
     l += (float)(note - kgrp[k].root); //pitch
     l = 22050.0f * iFs * (float)exp(0.05776226505 * l);
     delta = (uint32_t)(65536.0f * l);
     frac = 0;
-    pos = kgrp[k].pos;
-    end = kgrp[k].end;
-    loop = kgrp[k].loop;
+    pos = 0;
+    end = samples[sample_index].size;
+    loop = kgrp[sample_index].loop;
 
     env = (0.5f + velsens) * (float)pow(0.0078f * velocity, velsens); //velocity
 
@@ -137,8 +138,8 @@ void mdaPianoVoice::render(uint32_t from, uint32_t to)
     frac &= 0xFFFF;
     if(pos > end) pos -= loop;
 
-    i = waves[pos];
-    i = (i << 7) + (frac >> 9) * (waves[pos + 1] - i) + 0x40400000;
+    i = samples[sample_index].buffer[pos];
+    i = (i << 7) + (frac >> 9) * (samples[sample_index].buffer[pos + 1] - i) + 0x40400000;
     x = env * (*(float *)&i - 3.0f);  //fast int->float
 
     env = env * dec;  //envelope

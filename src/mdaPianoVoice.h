@@ -18,7 +18,8 @@ class mdaPianoVoice : public LV2::Voice {
 
     /// global internal variables
     KGRP  *kgrp;
-    short *waves;
+    Sample *samples;
+    uint32_t sample_index;
     float default_preset[NPARAMS]; // contains the default preset
     short sustain;
     float comb[256];
@@ -50,7 +51,7 @@ class mdaPianoVoice : public LV2::Voice {
     unsigned char m_key;
 
   public:
-    mdaPianoVoice(double, short*, KGRP*);
+    mdaPianoVoice(double, Sample*, KGRP*);
     void set_sustain(unsigned short v) { sustain = v; }
     void set_volume(float v) { volume = v; }
     void set_muff(float v) { muff = v; }

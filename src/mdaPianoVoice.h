@@ -25,7 +25,7 @@ class mdaPianoVoice : public LV2::Voice {
     float cdep, width, trim;
     float fine, random, stretch;
     float volume, muff, muffvel, sizevel, velsens;
-    uint32_t cpos, size, poly;
+    uint32_t cpos, size;
 
     // voice state
     uint32_t  delta;  // sample playback

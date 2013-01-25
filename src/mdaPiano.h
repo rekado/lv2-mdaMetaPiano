@@ -1,11 +1,11 @@
-//See associated .cpp file for copyright and other info
-
 #ifndef MDA_PIANO_H
 #define MDA_PIANO_H
+//See associated .cpp file for copyright and other info
 
-#pragma GCC system_header
 #include "mdaPianoVoice.h"
 #include "mdaPiano.peg"
+
+#pragma GCC system_header
 #include <lv2synth.hpp>
 
 

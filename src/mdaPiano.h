@@ -30,10 +30,7 @@ public:
   unsigned find_free_voice(unsigned char, unsigned char);
   void handle_midi(uint32_t size, unsigned char* data);
   void setVolume(float);
-
-
-private:
-  void update();  //my parameter update
+  void update(void);
 };
 
 #endif

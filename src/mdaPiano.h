@@ -29,10 +29,6 @@ public:
 
 private:
   void update();  //my parameter update
-  void noteOn(uint32_t note, uint32_t velocity);
-
-  float param[NPARAMS];
-  float Fs, iFs;
 
   ///global internal variables
   KGRP  kgrp[16];

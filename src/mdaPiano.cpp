@@ -150,11 +150,12 @@ void mdaPiano::handle_midi(uint32_t size, unsigned char* data) {
         case 0x78:
         //all notes off
         case 0x7b:
-        default:
           for(short v=0; v<NVOICES; v++) {
             voices[v]->reset();
           }
           break;
+
+        default: break;
       }
       break;
 

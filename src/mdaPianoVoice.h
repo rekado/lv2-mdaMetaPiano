@@ -20,7 +20,6 @@ class mdaPianoVoice : public LV2::Voice {
     KGRP  *kgrp;
     Sample *samples;
     uint32_t sample_index;
-    float default_preset[NPARAMS]; // contains the default preset
     short sustain;
     float comb[256];
     float cdep, width, trim;
@@ -29,16 +28,16 @@ class mdaPianoVoice : public LV2::Voice {
     uint32_t cpos, size, poly;
 
     // voice state
-    uint32_t  delta;  //sample playback
+    uint32_t  delta;  // sample playback
     uint32_t  frac;
     uint32_t  pos;
     uint32_t  end;
     uint32_t  loop;
 
-    float env;  //envelope
+    float env;  // envelope
     float dec;
 
-    float f0;   //first-order LPF
+    float f0;   // first-order LPF
     float f1;
     float ff;
 
@@ -46,6 +45,7 @@ class mdaPianoVoice : public LV2::Voice {
     float outr;
     uint32_t  note; //remember what note triggered this
     // end of voice state
+    float default_preset[NPARAMS]; // contains the default preset
 
   protected:
     unsigned char m_key;

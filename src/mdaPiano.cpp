@@ -17,9 +17,6 @@
 #include "mdaPiano.h"
 #include <cstdlib> //for exit
 
-#include <stdio.h>
-#include <math.h>
-
 #define STRING_BUF 2048
 
 mdaPiano::mdaPiano(double rate)

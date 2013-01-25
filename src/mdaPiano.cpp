@@ -79,8 +79,7 @@ unsigned mdaPiano::find_free_voice(unsigned char key, unsigned char velocity) {
 }
 
 
-void mdaPiano::setVolume(float value)
-{
+void mdaPiano::setVolume(float value) {
   for (uint32_t v=0; v<NVOICES; ++v)
     voices[v]->set_volume(value);
 }
@@ -165,8 +164,7 @@ void mdaPiano::handle_midi(uint32_t size, unsigned char* data) {
 
 
 // TODO: load keymapping from a file
-void mdaPiano::load_kgrp(KGRP *kgrp)
-{
+void mdaPiano::load_kgrp(KGRP *kgrp) {
   kgrp[ 0].root = 36;  kgrp[ 0].high = 37;  kgrp[ 0].loop = 14774;
   kgrp[ 1].root = 40;  kgrp[ 1].high = 41;  kgrp[ 1].loop = 16268;
   kgrp[ 2].root = 43;  kgrp[ 2].high = 45;  kgrp[ 2].loop = 33541;
@@ -185,8 +183,7 @@ void mdaPiano::load_kgrp(KGRP *kgrp)
 }
 
 
-void mdaPiano::load_sample(Sample *s, const char* name)
-{
+void mdaPiano::load_sample(Sample *s, const char* name) {
   FILE *f;
   long num, size;
   char filepath[STRING_BUF];
@@ -226,5 +223,6 @@ void mdaPiano::load_sample(Sample *s, const char* name)
 
   return;
 }
+
 
 static int _ = mdaPiano::register_class(p_uri);

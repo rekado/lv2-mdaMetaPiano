@@ -45,8 +45,7 @@ float mdaPianoVoice::p_helper(unsigned short id, Param d) {
 }
 
 
-void mdaPianoVoice::on(unsigned char note, unsigned char velocity)
-{
+void mdaPianoVoice::on(unsigned char note, unsigned char velocity) {
   // store key that turned this voice on (used in 'get_key')
   m_key = note;
   update(Current);
@@ -54,7 +53,7 @@ void mdaPianoVoice::on(unsigned char note, unsigned char velocity)
   float l=99.0f;
   uint32_t k, s;
 
-  if(velocity>0)
+  if(velocity > 0)
   {
     k = (note - 60) * (note - 60);
     l = fine + random * ((float)(k % 13) - 6.5f);  //random & fine tune
@@ -93,9 +92,8 @@ void mdaPianoVoice::on(unsigned char note, unsigned char velocity)
     l = 2.0f * *p(p_envelope_decay);
     if(l < 1.0f) l += 0.25f - 0.5f * *p(p_envelope_decay);
     dec = (float)exp(-iFs * exp(-0.6 + 0.033 * (double)note - l));
-  }
-  else //note off
-  {
+  } else {
+    // some keyboards send note off events as 'note on' with velocity 0
     release(0);
   }
 }
@@ -120,8 +118,7 @@ void mdaPianoVoice::release(unsigned char velocity)
 }
 
 
-void mdaPianoVoice::render(uint32_t from, uint32_t to)
-{
+void mdaPianoVoice::render(uint32_t from, uint32_t to) {
   // abort if no key is pressed
   // initially m_key is INVALID_KEY, so no sound will be rendered
   if (m_key == LV2::INVALID_KEY)
@@ -131,9 +128,10 @@ void mdaPianoVoice::render(uint32_t from, uint32_t to)
   uint32_t i;
 
   for (uint32_t frame = from; frame < to; ++frame) {
+    // initialize left and right output
     l = r = 0.0f;
 
-    frac += delta;  //integer-based linear interpolation
+    frac += delta;  // integer-based linear interpolation
     pos += frac >> 16;
     frac &= 0xFFFF;
     if(pos > end) pos -= loop;
@@ -165,14 +163,15 @@ void mdaPianoVoice::render(uint32_t from, uint32_t to)
 }
 
 
-void mdaPianoVoice::update(Param par)
-{
+void mdaPianoVoice::update(Param par) {
   size = (uint32_t)(12.0f * p_helper(p_hardness_offset, par) - 6.0f);
   sizevel = 0.12f * p_helper(p_velocity_to_hardness, par);
   muffvel = p_helper(p_velocity_to_muffling, par) * p_helper(p_velocity_to_muffling, par) * 5.0f;
 
   velsens = 1.0f + p_helper(p_velocity_sensitivity, par) + p_helper(p_velocity_sensitivity, par);
-  if(p_helper(p_velocity_sensitivity, par) < 0.25f) velsens -= 0.75f - 3.0f * p_helper(p_velocity_sensitivity, par);
+  if(p_helper(p_velocity_sensitivity, par) < 0.25f) {
+    velsens -= 0.75f - 3.0f * p_helper(p_velocity_sensitivity, par);
+  }
 
   fine = p_helper(p_fine_tuning, par) - 0.5f;
   random = 0.077f * p_helper(p_random_detuning, par) * p_helper(p_random_detuning, par);

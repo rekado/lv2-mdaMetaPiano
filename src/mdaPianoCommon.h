@@ -7,6 +7,7 @@
 #define SUSTAIN 128
 #define SILENCE 0.0001f  //voice choking
 #define PARAM_OFFSET 3 //offset for param enum
+#define SAMPLES_PER_NOTE 1
 
 struct KGRP  //keygroup
 {

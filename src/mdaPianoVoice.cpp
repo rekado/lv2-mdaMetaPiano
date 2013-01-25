@@ -52,7 +52,7 @@ void mdaPianoVoice::on(unsigned char key, unsigned char velocity) {
     if(velocity > 40) s += (uint32_t)(sizevel * (float)(velocity - 40));
 
     k = 0;
-    while(key > (kgrp[k].high + s)) k++; // find keygroup
+    while(key > (kgrp[k].high + s)) k += SAMPLES_PER_NOTE; // find keygroup
     sample_index = k; // store sample index
 
     l += (float)(key - kgrp[k].root); // pitch

@@ -43,7 +43,6 @@ class mdaPianoVoice : public LV2::Voice {
 
     float outl;
     float outr;
-    uint32_t  note; //remember what note triggered this
     // end of voice state
     float default_preset[NPARAMS]; // contains the default preset
 

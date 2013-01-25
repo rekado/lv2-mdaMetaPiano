@@ -34,9 +34,9 @@ float mdaPianoVoice::p_helper(unsigned short id, Param d) {
 }
 
 
-void mdaPianoVoice::on(unsigned char note, unsigned char velocity) {
+void mdaPianoVoice::on(unsigned char key, unsigned char velocity) {
   // store key that turned this voice on (used in 'get_key')
-  m_key = note;
+  m_key = key;
   update(Current);
 
   float l=99.0f;
@@ -44,18 +44,18 @@ void mdaPianoVoice::on(unsigned char note, unsigned char velocity) {
 
   if(velocity > 0)
   {
-    k = (note - 60) * (note - 60);
+    k = (key - 60) * (key - 60);
     l = fine + random * ((float)(k % 13) - 6.5f);  //random & fine tune
-    if(note > 60) l += stretch * (float)k; //stretch
+    if(key > 60) l += stretch * (float)k; //stretch
 
     s = size;
     if(velocity > 40) s += (uint32_t)(sizevel * (float)(velocity - 40));
 
     k = 0;
-    while(note > (kgrp[k].high + s)) k++;  //find keygroup
-    sample_index = k; //store sample index
+    while(key > (kgrp[k].high + s)) k++; // find keygroup
+    sample_index = k; // store sample index
 
-    l += (float)(note - kgrp[k].root); //pitch
+    l += (float)(key - kgrp[k].root); // pitch
     l = 22050.0f * iFs * (float)exp(0.05776226505 * l);
     delta = (uint32_t)(65536.0f * l);
     frac = 0;
@@ -66,21 +66,22 @@ void mdaPianoVoice::on(unsigned char note, unsigned char velocity) {
     env = (0.5f + velsens) * (float)pow(0.0078f * velocity, velsens); //velocity
 
     l = 50.0f + *p(p_muffling_filter) * *p(p_muffling_filter) * muff + muffvel * (float)(velocity - 64); //muffle
-    if(l < (55.0f + 0.25f * (float)note)) l = 55.0f + 0.25f * (float)note;
+    if(l < (55.0f + 0.25f * (float)key)) l = 55.0f + 0.25f * (float)key;
     if(l > 210.0f) l = 210.0f;
     ff = l * l * iFs;
     f0 = f1 = 0.0f;
 
-    if(note <  12) note = 12;
-    if(note > 108) note = 108;
+    // note->pan
+    if(key <  12) key = 12;
+    if(key > 108) key = 108;
     l = volume * trim;
-    outr = l + l * width * (float)(note - 60);
+    outr = l + l * width * (float)(key - 60);
     outl = l + l - outr;
 
-    if(note < 44) note = 44; //limit max decay length
+    if(key < 44) key = 44; //limit max decay length
     l = 2.0f * *p(p_envelope_decay);
     if(l < 1.0f) l += 0.25f - 0.5f * *p(p_envelope_decay);
-    dec = (float)exp(-iFs * exp(-0.6 + 0.033 * (double)note - l));
+    dec = (float)exp(-iFs * exp(-0.6 + 0.033 * (double)key - l));
   } else {
     // some keyboards send note off events as 'note on' with velocity 0
     release(0);

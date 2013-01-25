@@ -126,6 +126,7 @@ void mdaPianoVoice::render(uint32_t from, uint32_t to) {
   float x, l, r;
   uint32_t i;
 
+  update(Current);
   for (uint32_t frame = from; frame < to; ++frame) {
     // initialize left and right output
     l = r = 0.0f;

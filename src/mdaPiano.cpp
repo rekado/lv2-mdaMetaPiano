@@ -89,18 +89,6 @@ void mdaPiano::setVolume(float value)
 }
 
 
-void mdaPiano::setParameter(unsigned char id, float value)
-{
-  if(id>=NPARAMS)
-    return;
-  *p(id+PARAM_OFFSET) = value;
-  update();
-#ifdef DEBUG
-  printf("changed %i to %f\n", id, value);
-#endif
-}
-
-
 void mdaPiano::handle_midi(uint32_t size, unsigned char* data) {
 #ifdef DEBUG
   printf("%d\n", data[1]);

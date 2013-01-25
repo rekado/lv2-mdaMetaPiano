@@ -25,7 +25,6 @@ public:
   unsigned find_free_voice(unsigned char, unsigned char);
   void handle_midi(uint32_t size, unsigned char* data);
   void setVolume(float);
-  void setParameter(unsigned char, float);
 
 
 private:

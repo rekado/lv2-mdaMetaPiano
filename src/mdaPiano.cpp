@@ -134,7 +134,7 @@ void mdaPiano::handle_midi(uint32_t size, unsigned char* data) {
           break;
 
         case 0x40:  //sustain pedal
-        case 0x42:  //sustenuto pedal
+        case 0x42:  //sostenuto pedal
           sustain = data[2] & 0x40;
 
           for (unsigned i = 0; i < NVOICES; ++i) {

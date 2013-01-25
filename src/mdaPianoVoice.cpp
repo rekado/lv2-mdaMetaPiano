@@ -26,17 +26,6 @@ mdaPianoVoice::mdaPianoVoice(double rate, Sample * master_samples, KGRP * master
 }
 
 
-void mdaPianoVoice::reset() {
-  env = 0.0f;
-  dec = 0.99f;
-  muff = 160.0f;
-  volume = 0.2f;
-  sustain = 0;
-  cpos = 0;
-  m_key = LV2::INVALID_KEY;
-}
-
-
 float mdaPianoVoice::p_helper(unsigned short id, Param d) {
   if (d == Default)
     return default_preset[p_offset(id)];
@@ -99,8 +88,18 @@ void mdaPianoVoice::on(unsigned char note, unsigned char velocity) {
 }
 
 
-void mdaPianoVoice::release(unsigned char velocity)
-{
+void mdaPianoVoice::reset() {
+  env = 0.0f;
+  dec = 0.99f;
+  muff = 160.0f;
+  volume = 0.2f;
+  sustain = 0;
+  cpos = 0;
+  m_key = LV2::INVALID_KEY;
+}
+
+
+void mdaPianoVoice::release(unsigned char velocity) {
   if(sustain==0) {
     //no release on highest notes
     if(m_key < 94 || m_key == SUSTAIN) {

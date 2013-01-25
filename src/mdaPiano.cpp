@@ -22,6 +22,8 @@
 mdaPiano::mdaPiano(double rate)
   : LV2::Synth<mdaPianoVoice, mdaPiano>(p_n_ports, p_midi) {
 
+  sustain = 0;
+
   static const char* sample_names[] =
     { "0c.raw", "0e.raw", "0g.raw"
     , "1c.raw", "1e.raw", "1g.raw"
@@ -41,16 +43,7 @@ mdaPiano::mdaPiano(double rate)
     add_voices(voices[i]);
   }
 
-  sustain = 0;
-
   add_audio_outputs(p_left, p_right);
-}
-
-//parameter change
-void mdaPiano::update() {
-  for (uint32_t v=0; v<NVOICES; ++v) {
-    voices[v]->update(Current);
-  }
 }
 
 
@@ -82,6 +75,14 @@ unsigned mdaPiano::find_free_voice(unsigned char key, unsigned char velocity) {
 void mdaPiano::setVolume(float value) {
   for (uint32_t v=0; v<NVOICES; ++v)
     voices[v]->set_volume(value);
+}
+
+
+//parameter change
+void mdaPiano::update() {
+  for (uint32_t v=0; v<NVOICES; ++v) {
+    voices[v]->update(Current);
+  }
 }
 
 

@@ -11,7 +11,7 @@
 
 class mdaPiano : public LV2::Synth<mdaPianoVoice, mdaPiano> {
 public:
-  mdaPiano(double rate);
+  mdaPiano(double);
   ~mdaPiano() {
     for (unsigned char i = 0; i < 15; i++) {
       free(samples[i].buffer);
@@ -28,7 +28,7 @@ public:
   void load_sample(Sample*, const char*);
 
   unsigned find_free_voice(unsigned char, unsigned char);
-  void handle_midi(uint32_t size, unsigned char* data);
+  void handle_midi(uint32_t, unsigned char*);
   void setVolume(float);
   void update(void);
 };

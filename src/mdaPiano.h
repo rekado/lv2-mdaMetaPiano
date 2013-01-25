@@ -19,6 +19,11 @@ public:
     free(samples);
   }
 
+  bool sustain;
+  KGRP  kgrp[16];
+  mdaPianoVoice *voices[NVOICES];
+  Sample *samples = (Sample*) malloc (15 * sizeof(Sample));
+
   void load_kgrp(KGRP*);
   void load_sample(Sample*, const char*);
 
@@ -29,12 +34,6 @@ public:
 
 private:
   void update();  //my parameter update
-
-  ///global internal variables
-  KGRP  kgrp[16];
-  mdaPianoVoice *voices[NVOICES];
-  Sample *samples = (Sample*) malloc (15 * sizeof(Sample));
-  uint32_t sustain;
 };
 
 #endif

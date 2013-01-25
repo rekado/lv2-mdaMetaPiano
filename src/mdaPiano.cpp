@@ -32,7 +32,7 @@ mdaPiano::mdaPiano(double rate)
     , "4c.raw", "4e.raw", "4a.raw"
     };
 
-  for (unsigned char i=0; i<15; ++i) {
+  for (unsigned char i=0; i<NSAMPLES; ++i) {
     load_sample(&samples[i], sample_names[i]);
   }
 

@@ -13,16 +13,16 @@ class mdaPiano : public LV2::Synth<mdaPianoVoice, mdaPiano> {
 public:
   mdaPiano(double);
   ~mdaPiano() {
-    for (unsigned char i = 0; i < 15; i++) {
+    for (unsigned char i = 0; i < NSAMPLES; i++) {
       free(samples[i].buffer);
     }
     free(samples);
   }
 
   bool sustain;
-  KGRP  kgrp[16];
+  KGRP kgrp[NSAMPLES];
   mdaPianoVoice *voices[NVOICES];
-  Sample *samples = (Sample*) malloc (15 * sizeof(Sample));
+  Sample *samples = (Sample*) malloc (NSAMPLES * sizeof(Sample));
 
   void load_kgrp(KGRP*);
   void load_sample(Sample*, const char*);

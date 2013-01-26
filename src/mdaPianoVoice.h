@@ -5,14 +5,14 @@
 #include "mdaPiano.peg"
 
 #pragma GCC system_header
-#include <lv2synth.hpp>
+#include <lvtk/synth.hpp>
 
 enum Param {
   Default,
   Current
 };
 
-class mdaPianoVoice : public LV2::Voice {
+class mdaPianoVoice : public lvtk::Voice {
   private:
     float Fs, iFs;
 

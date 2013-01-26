@@ -6,10 +6,11 @@
 #include "mdaPiano.peg"
 
 #pragma GCC system_header
-#include <lv2synth.hpp>
+#include <lvtk/synth.hpp>
+#include <stdio.h>
 
 
-class mdaPiano : public LV2::Synth<mdaPianoVoice, mdaPiano> {
+class mdaPiano : public lvtk::Synth<mdaPianoVoice, mdaPiano> {
 public:
   mdaPiano(double);
   ~mdaPiano() {

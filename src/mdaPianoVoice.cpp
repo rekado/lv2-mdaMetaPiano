@@ -96,7 +96,7 @@ void mdaPianoVoice::reset() {
   volume = 0.2f;
   sustain = 0;
   cpos = 0;
-  m_key = LV2::INVALID_KEY;
+  m_key = lvtk::INVALID_KEY;
 }
 
 
@@ -121,7 +121,7 @@ void mdaPianoVoice::release(unsigned char velocity) {
 void mdaPianoVoice::render(uint32_t from, uint32_t to) {
   // abort if no key is pressed
   // initially m_key is INVALID_KEY, so no sound will be rendered
-  if (m_key == LV2::INVALID_KEY)
+  if (m_key == lvtk::INVALID_KEY)
     return;
 
   float x, l, r;
@@ -159,7 +159,7 @@ void mdaPianoVoice::render(uint32_t from, uint32_t to) {
 
   // turn off further processing when the envelope has rendered the voice silent
   if (env < SILENCE) {
-    m_key = LV2::INVALID_KEY;
+    m_key = lvtk::INVALID_KEY;
   }
 }
 

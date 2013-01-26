@@ -11,10 +11,10 @@ $(BUNDLE): manifest.ttl mdaPiano.ttl mdaPiano.so presets data/*.raw
 	cp -r $^ $(BUNDLE)
 
 mdaPiano.so: $(SOURCES) mdaPiano.peg
-	$(CXX) $(FLAGS) -shared $(SOURCES) `pkg-config --cflags --libs lv2-plugin` -o $@
+	$(CXX) $(FLAGS) -shared $(SOURCES) `pkg-config --cflags --libs lvtk-plugin-1` -o $@
 
 mdaPiano.peg: mdaPiano.ttl
-	lv2peg $^ mdaPiano.peg
+	ttl2c $^ mdaPiano.peg
 
 install: $(BUNDLE)
 	mkdir -p $(INSTALL_DIR)

@@ -20,7 +20,7 @@
 #define STRING_BUF 2048
 
 mdaPiano::mdaPiano(double rate)
-  : LV2::Synth<mdaPianoVoice, mdaPiano>(p_n_ports, p_midi) {
+  : lvtk::Synth<mdaPianoVoice, mdaPiano>(p_n_ports, p_midi) {
 
   sustain = 0;
 
@@ -61,7 +61,7 @@ unsigned mdaPiano::find_free_voice(unsigned char key, unsigned char velocity) {
   // ... notes are sustained but not this new one
   // ... notes are not sustained
   for (unsigned i = 0; i < NVOICES; ++i) {
-    if (voices[i]->get_key() == LV2::INVALID_KEY)
+    if (voices[i]->get_key() == lvtk::INVALID_KEY)
     {
       return i;
     }

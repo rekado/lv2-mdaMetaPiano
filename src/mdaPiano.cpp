@@ -160,26 +160,6 @@ void mdaPiano::handle_midi(uint32_t size, unsigned char* data) {
 }
 
 
-// TODO: load keymapping from a file
-void mdaPiano::load_kgrp(KGRP *kgrp) {
-  kgrp[ 0].root = 36;  kgrp[ 0].high = 37;  kgrp[ 0].loop = 14774;
-  kgrp[ 1].root = 40;  kgrp[ 1].high = 41;  kgrp[ 1].loop = 16268;
-  kgrp[ 2].root = 43;  kgrp[ 2].high = 45;  kgrp[ 2].loop = 33541;
-  kgrp[ 3].root = 48;  kgrp[ 3].high = 49;  kgrp[ 3].loop = 21156;
-  kgrp[ 4].root = 52;  kgrp[ 4].high = 53;  kgrp[ 4].loop = 17191;
-  kgrp[ 5].root = 55;  kgrp[ 5].high = 57;  kgrp[ 5].loop = 23286;
-  kgrp[ 6].root = 60;  kgrp[ 6].high = 61;  kgrp[ 6].loop = 18002;
-  kgrp[ 7].root = 64;  kgrp[ 7].high = 65;  kgrp[ 7].loop = 19746;
-  kgrp[ 8].root = 67;  kgrp[ 8].high = 69;  kgrp[ 8].loop = 22253;
-  kgrp[ 9].root = 72;  kgrp[ 9].high = 73;  kgrp[ 9].loop = 8852;
-  kgrp[10].root = 76;  kgrp[10].high = 77;  kgrp[10].loop = 9693;
-  kgrp[11].root = 79;  kgrp[11].high = 81;  kgrp[11].loop = 10596;
-  kgrp[12].root = 84;  kgrp[12].high = 85;  kgrp[12].loop = 6011;
-  kgrp[13].root = 88;  kgrp[13].high = 89;  kgrp[13].loop = 3414;
-  kgrp[14].root = 93;  kgrp[14].high = 999; kgrp[14].loop = 2399;
-}
-
-
 void mdaPiano::load_sample(Sample *s, const char* name) {
   FILE *f;
   long num, size;
@@ -219,6 +199,26 @@ void mdaPiano::load_sample(Sample *s, const char* name) {
   s->size = size / 2;
 
   return;
+}
+
+
+// TODO: load keymapping from a file
+void mdaPiano::load_kgrp(KGRP *kgrp) {
+  kgrp[ 0].root = 36;  kgrp[ 0].high = 37;  kgrp[ 0].loop = 14774;
+  kgrp[ 1].root = 40;  kgrp[ 1].high = 41;  kgrp[ 1].loop = 16268;
+  kgrp[ 2].root = 43;  kgrp[ 2].high = 45;  kgrp[ 2].loop = 33541;
+  kgrp[ 3].root = 48;  kgrp[ 3].high = 49;  kgrp[ 3].loop = 21156;
+  kgrp[ 4].root = 52;  kgrp[ 4].high = 53;  kgrp[ 4].loop = 17191;
+  kgrp[ 5].root = 55;  kgrp[ 5].high = 57;  kgrp[ 5].loop = 23286;
+  kgrp[ 6].root = 60;  kgrp[ 6].high = 61;  kgrp[ 6].loop = 18002;
+  kgrp[ 7].root = 64;  kgrp[ 7].high = 65;  kgrp[ 7].loop = 19746;
+  kgrp[ 8].root = 67;  kgrp[ 8].high = 69;  kgrp[ 8].loop = 22253;
+  kgrp[ 9].root = 72;  kgrp[ 9].high = 73;  kgrp[ 9].loop = 8852;
+  kgrp[10].root = 76;  kgrp[10].high = 77;  kgrp[10].loop = 9693;
+  kgrp[11].root = 79;  kgrp[11].high = 81;  kgrp[11].loop = 10596;
+  kgrp[12].root = 84;  kgrp[12].high = 85;  kgrp[12].loop = 6011;
+  kgrp[13].root = 88;  kgrp[13].high = 89;  kgrp[13].loop = 3414;
+  kgrp[14].root = 93;  kgrp[14].high = 999; kgrp[14].loop = 2399;
 }
 
 

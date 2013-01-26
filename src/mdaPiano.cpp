@@ -111,8 +111,10 @@ void mdaPiano::handle_midi(uint32_t size, unsigned char* data) {
       voices[ find_free_voice(data[1], data[2]) ]->on(data[1], data[2]);
       break;
 
+    case 0xE0: break; //TODO: pitch bend
 
-    case 0xB0: //controller
+    //controller
+    case 0xB0:
       switch(data[1])
       {
         case 0x01:  //mod wheel

@@ -21,29 +21,53 @@ class mdaPianoVoice : public lvtk::Voice {
     Sample *samples;
     uint32_t sample_index;
     short sustain;
-    float comb[256];
-    float cdep, width, trim;
-    float fine, random, stretch;
-    float volume, muff, muffvel, sizevel, velsens;
-    uint32_t cpos, size;
+    float width;
+    float fine, random;
+    float sizevel, velsens, volume;
 
+#ifdef PIANO
+    float comb[256];
+    float cdep, trim;
+    float stretch;
+    float muff, muffvel;
+    uint32_t cpos, size;
+#endif
+#ifdef EPIANO
+    long size;
+    float overdrive;
+    float lfo0, lfo1, dlfo, lmod, rmod;
+    float treb, tfrq, tl, tr;
+#endif
+
+// TODO: uint32_t or long?
+#ifdef PIANO
     // voice state
     uint32_t  delta;  // sample playback
     uint32_t  frac;
     uint32_t  pos;
     uint32_t  end;
     uint32_t  loop;
+#elif defined EPIANO
+    long  delta;  // sample playback
+    long  frac;
+    long  pos;
+    long  end;
+    long  loop;
+#endif
 
     float env;  // envelope
     float dec;
 
+#ifdef PIANO
     float f0;   // first-order LPF
     float f1;
     float ff;
+#endif
 
     float outl;
     float outr;
     // end of voice state
+
     float default_preset[NPARAMS]; // contains the default preset
 
   protected:
@@ -53,7 +77,9 @@ class mdaPianoVoice : public lvtk::Voice {
     mdaPianoVoice(double, Sample*, KGRP*);
     void set_sustain(unsigned short v) { sustain = v; }
     void set_volume(float v) { volume = v; }
+#ifdef PIANO
     void set_muff(float v) { muff = v; }
+#endif
 
     float p_helper(unsigned short, Param);
     void update(Param); // recalculates internal variables

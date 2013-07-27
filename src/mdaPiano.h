@@ -27,6 +27,9 @@ public:
 
   void load_kgrp(KGRP*);
   void load_sample(Sample*, const char*);
+#ifdef EPIANO
+  void tweak_samples(void);
+#endif
 
   unsigned find_free_voice(unsigned char, unsigned char);
   void handle_midi(uint32_t, unsigned char*);

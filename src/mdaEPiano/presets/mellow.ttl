@@ -1,0 +1,48 @@
+@prefix lv2:  <http://lv2plug.in/ns/lv2core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix base: <http://elephly.net/lv2/> .
+@prefix pset: <http://lv2plug.in/ns/ext/presets#> .
+@prefix pre:  <http://elephly.net/lv2/mdaEPiano/presets#> .
+
+pre:mellow
+  a              pset:Preset ;
+  rdfs:label     "Mellow" ;
+  pset:appliesTo base:mdaEPiano ;
+
+  lv2:port [
+    lv2:symbol "envelope_decay" ;
+    pset:value 0.500
+  ] , [
+    lv2:symbol "envelope_release" ;
+    pset:value 0.500
+  ] , [
+    lv2:symbol "hardness" ;
+    pset:value 0.000
+  ] , [
+    lv2:symbol "treble_boost" ;
+    pset:value 0.000
+  ] , [
+    lv2:symbol "modulation" ;
+    pset:value 0.500
+  ] , [
+    lv2:symbol "lfo_rate" ;
+    pset:value 0.650
+  ] , [
+    lv2:symbol "velocity_sensitivity" ;
+    pset:value 0.250
+  ] , [
+    lv2:symbol "stereo_width" ;
+    pset:value 0.500
+  ] , [
+    lv2:symbol "polyphony" ;
+    pset:value 0.500
+  ] , [
+    lv2:symbol "fine_tuning" ;
+    pset:value 0.500
+  ] , [
+    lv2:symbol "random_tuning" ;
+    pset:value 0.246
+  ] , [
+    lv2:symbol "overdrive" ;
+    pset:value 0.0
+  ] .

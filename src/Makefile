@@ -12,7 +12,7 @@ SOURCES = *.cpp
 FLAGS = -fPIC -DPIC -O $(WARNINGS) -D$(BUILD_TYPE)
 WARNINGS = -g -Wall -pedantic
 
-$(BUNDLE): manifest.ttl $(TYPE).ttl $(TYPE).so $(TYPE)/presets $(TYPE)/data/*.raw
+$(BUNDLE): $(TYPE)/manifest.ttl $(TYPE)/$(TYPE).ttl $(TYPE).so $(TYPE)/presets $(TYPE)/data/*.raw
 	rm -rf $(BUNDLE)
 	mkdir $(BUNDLE)
 	cp -r $^ $(BUNDLE)
@@ -20,7 +20,7 @@ $(BUNDLE): manifest.ttl $(TYPE).ttl $(TYPE).so $(TYPE)/presets $(TYPE)/data/*.ra
 $(TYPE).so: $(SOURCES) ports.peg
 	$(CXX) $(FLAGS) -shared $(SOURCES) `pkg-config --cflags --libs lvtk-plugin-1` -o $@
 
-ports.peg: $(TYPE).ttl
+ports.peg: $(TYPE)/$(TYPE).ttl
 	ttl2c $^ ports.peg
 
 install: $(BUNDLE)

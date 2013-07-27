@@ -1,10 +1,10 @@
-# LV2 port of the famous mdaPiano VSTi
+# LV2 port of the popular mdaPiano and mdaEPiano VSTi
 
 Port
   Author: rekado
-  Based on: `mda-vst-src-2010-02-14.zip`
 
-mdaPiano
+Based on the mdaPiano / mdaEPiano sources
+  Source: `mda-vst-src-2010-02-14.zip`
   Author: Paul Kellett (paul.kellett@mda-vst.com)
           http://sourceforge.net/projects/mda-vst/
 
@@ -12,9 +12,12 @@ mdaPiano
 
 ## About
 
-This is an attempt to port the mdaPiano VSTi plugin to the LV2 plugin
-platform. I'd like to thank Paul Kellett for his decision to put the
-plugin's source code under a free license (see LICENSE for more info).
+This is an attempt to merge the mdaEPiano and mdaPiano ports.  The two
+plugins share a lot of code.  Putting them together and building both
+plugins from the same source should make maintenance simpler.
+
+I'd like to thank Paul Kellett for his decision to put the
+plugins' source code under a free license (see LICENSE for more info).
 
 
 ## Compiling
@@ -25,7 +28,7 @@ To compile the plugin, just execute the following statement:
 
 This will copy the compiled plugin to `/usr/local/lib/lv2`.
 
-**NOTE**: you will need larsl's `lv2-c++-tools` to compile this plugin: http://freecode.com/projects/lv2-c-tools
+**NOTE**: you will need the lvtoolkit libraries to compile this plugin: http://lvtoolkit.org
 
 
 ## Connecting
@@ -47,7 +50,7 @@ the code which does these things automatically.
 
 ## License
 
-The original mda VST plug-ins by Paul Kellett are released under the MIT
-license or under the GPL "either version 2 of the License, or (at your option)
-any later version". The LV2 port of the mdaPiano plugin by rekado is released
-under the same licenses.
+The original mda VST plug-ins by Paul Kellett are released under the
+MIT license or under the GPL "either version 2 of the License, or (at
+your option) any later version". The LV2 ports of the mdaPiano and
+mdaEPiano plugins by rekado are released under the same licenses.

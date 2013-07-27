@@ -3,7 +3,7 @@
 //See associated .cpp file for copyright and other info
 
 #include "mdaPianoVoice.h"
-#include "mdaPiano.peg"
+#include "ports.peg"
 
 #pragma GCC system_header
 #include <lvtk/synth.hpp>

@@ -2,7 +2,7 @@
 #define MDA_PIANO_VOICE_H
 
 #include "mdaPianoCommon.h"
-#include "mdaPiano.peg"
+#include "ports.peg"
 
 #pragma GCC system_header
 #include <lvtk/synth.hpp>

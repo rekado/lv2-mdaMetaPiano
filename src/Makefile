@@ -17,11 +17,11 @@ $(BUNDLE): manifest.ttl $(TYPE).ttl $(TYPE).so $(TYPE)/presets $(TYPE)/data/*.ra
 	mkdir $(BUNDLE)
 	cp -r $^ $(BUNDLE)
 
-$(TYPE).so: $(SOURCES) $(TYPE).peg
+$(TYPE).so: $(SOURCES) ports.peg
 	$(CXX) $(FLAGS) -shared $(SOURCES) `pkg-config --cflags --libs lvtk-plugin-1` -o $@
 
-$(TYPE).peg: $(TYPE).ttl
-	ttl2c $^ $(TYPE).peg
+ports.peg: $(TYPE).ttl
+	ttl2c $^ ports.peg
 
 install: $(BUNDLE)
 	mkdir -p $(INSTALL_DIR)
@@ -29,4 +29,4 @@ install: $(BUNDLE)
 	cp -R $(BUNDLE) $(INSTALL_DIR)
 
 clean:
-	rm -rf $(BUNDLE) $(addprefix $(TYPE),.so .peg)
+	rm -rf $(BUNDLE) $(TYPE).so ports.peg

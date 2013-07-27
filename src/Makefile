@@ -1,20 +1,27 @@
-BUNDLE = lv2-mdaPiano.lv2
+TYPE = mdaPiano
+ifeq ($(TYPE),mdaPiano)
+	BUILD_TYPE = PIANO
+else
+	BUILD_TYPE = EPIANO
+endif
+
+BUNDLE = lv2-$(TYPE).lv2
 INSTALL_DIR = /usr/local/lib/lv2
 
 SOURCES = *.cpp
-FLAGS = -fPIC -DPIC -O $(WARNINGS)
-WARNINGS = #-g -Wall -pedantic
+FLAGS = -fPIC -DPIC -O $(WARNINGS) -D$(BUILD_TYPE)
+WARNINGS = -g -Wall -pedantic
 
-$(BUNDLE): manifest.ttl mdaPiano.ttl mdaPiano.so presets data/*.raw
+$(BUNDLE): manifest.ttl $(TYPE).ttl $(TYPE).so $(TYPE)/presets $(TYPE)/data/*.raw
 	rm -rf $(BUNDLE)
 	mkdir $(BUNDLE)
 	cp -r $^ $(BUNDLE)
 
-mdaPiano.so: $(SOURCES) mdaPiano.peg
+$(TYPE).so: $(SOURCES) $(TYPE).peg
 	$(CXX) $(FLAGS) -shared $(SOURCES) `pkg-config --cflags --libs lvtk-plugin-1` -o $@
 
-mdaPiano.peg: mdaPiano.ttl
-	ttl2c $^ mdaPiano.peg
+$(TYPE).peg: $(TYPE).ttl
+	ttl2c $^ $(TYPE).peg
 
 install: $(BUNDLE)
 	mkdir -p $(INSTALL_DIR)
@@ -22,4 +29,4 @@ install: $(BUNDLE)
 	cp -R $(BUNDLE) $(INSTALL_DIR)
 
 clean:
-	rm -rf $(BUNDLE) mdaPiano.so mdaPiano.peg
+	rm -rf $(BUNDLE) $(addprefix $(TYPE),.so .peg)

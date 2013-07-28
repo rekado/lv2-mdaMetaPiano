@@ -90,13 +90,8 @@ void mdaPianoVoice::on(unsigned char key, unsigned char velocity) {
     if(velocity > 80) sample_index++; // high velocity sample
 #endif
 
-#ifdef PIANO
     end = samples[sample_index].size;
-#elif defined EPIANO
-    end = samples[sample_index].size - 1;
-#endif
     loop = kgrp[sample_index].loop;
-
 
 #ifdef PIANO
     env = (0.5f + velsens) * (float)pow(0.0078f * velocity, velsens); //velocity

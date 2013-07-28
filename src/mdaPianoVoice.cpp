@@ -149,6 +149,7 @@ void mdaPianoVoice::reset() {
 #ifdef PIANO
   muff = 160.0f;
   cpos = 0;
+  memset(comb, 0, sizeof(float) * 256);
 #elif defined EPIANO
   tl = tr = lfo0 = dlfo = 0.0f;
   lfo1 = 1.0f;

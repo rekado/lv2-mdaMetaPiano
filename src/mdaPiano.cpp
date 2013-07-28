@@ -47,14 +47,13 @@ mdaPiano::mdaPiano(double rate)
     };
 #endif
 
+  load_kgrp(kgrp);
   for (unsigned char i=0; i<NSAMPLES; ++i) {
     load_sample(&samples[i], sample_names[i]);
-  }
-
-  load_kgrp(kgrp);
 #ifdef EPIANO
-  tweak_samples();
+    tweak_sample(&samples[i], kgrp[i].loop);
 #endif
+  }
 
   for(uint32_t i=0; i<NVOICES; ++i) {
     voices[i] = new mdaPianoVoice(rate, samples, kgrp);
@@ -297,26 +296,20 @@ void mdaPiano::load_kgrp(KGRP *kgrp) {
 }
 
 
-#ifdef EPIANO
-void mdaPiano::tweak_samples() {
+void mdaPiano::tweak_sample(Sample *s, long loop_offset) {
   //extra xfade looping...
-  for(uint32_t k=0; k<28; k++)
-  {
-    long p0 = samples[k].size;
-    long p1 = samples[k].size - kgrp[k].loop;
+  long p0 = s->size;
+  long p1 = s->size - loop_offset;
 
-    float xf = 1.0f;
-    float dxf = -0.02f;
+  float xf = 1.0f;
+  float dxf = -0.02f;
 
-    while(xf > 0.0f)
-    {
-      samples[k].buffer[p0] = (short)((1.0f - xf) * (float)samples[k].buffer[p0] + xf * (float)samples[k].buffer[p1]);
-      p0--;
-      p1--;
-      xf += dxf;
-    }
+  while(xf > 0.0f) {
+    s->buffer[p0] = (short)((1.0f - xf) * (float)s->buffer[p0] + xf * (float)s->buffer[p1]);
+    p0--;
+    p1--;
+    xf += dxf;
   }
 }
-#endif
 
 static int _ = mdaPiano::register_class(p_uri);

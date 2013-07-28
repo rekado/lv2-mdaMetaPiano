@@ -267,23 +267,23 @@ void mdaPianoVoice::render(uint32_t from, uint32_t to) {
 
 
 void mdaPianoVoice::update(Param par) {
-#ifdef PIANO
-  size = (long)(12.0f * p_helper(p_hardness_offset, par) - 6.0f);
-  sizevel = 0.12f * p_helper(p_velocity_to_hardness, par);
-  muffvel = p_helper(p_velocity_to_muffling, par) * p_helper(p_velocity_to_muffling, par) * 5.0f;
-
   velsens = 1.0f + p_helper(p_velocity_sensitivity, par) + p_helper(p_velocity_sensitivity, par);
   if(p_helper(p_velocity_sensitivity, par) < 0.25f) {
     velsens -= 0.75f - 3.0f * p_helper(p_velocity_sensitivity, par);
   }
 
   fine = p_helper(p_fine_tuning, par) - 0.5f;
-  random = 0.077f * p_helper(p_random_detuning, par) * p_helper(p_random_detuning, par);
+#ifdef PIANO
+  size = (long)(12.0f * p_helper(p_hardness_offset, par) - 6.0f);
+  sizevel = 0.12f * p_helper(p_velocity_to_hardness, par);
+  muffvel = p_helper(p_velocity_to_muffling, par) * p_helper(p_velocity_to_muffling, par) * 5.0f;
+
   stretch = 0.000434f * (p_helper(p_stretch_tuning, par) - 0.5f);
 
   cdep = p_helper(p_stereo_width, par) * p_helper(p_stereo_width, par);
   trim = 1.50f - 0.79f * cdep;
   width = 0.04f * p_helper(p_stereo_width, par);  if(width > 0.03f) width = 0.03f;
+  random = 0.077f * p_helper(p_random_detuning, par) * p_helper(p_random_detuning, par);
 #elif defined EPIANO
   size = (long)(12.0f * p_helper(p_hardness, par) - 6.0f);
   treb = 4.0f * p_helper(p_treble_boost, par) * p_helper(p_treble_boost, par) - 1.0f; // treble gain
@@ -300,14 +300,8 @@ void mdaPianoVoice::update(Param par) {
   if(p_helper(p_modulation, par) < 0.5f) rmod = -rmod;
   dlfo = 6.283f * iFs * (float)exp(6.22f * p_helper(p_lfo_rate, par) - 2.61f); // lfo rate
 
-  velsens = 1.0f + p_helper(p_velocity_sensitivity, par) + p_helper(p_velocity_sensitivity, par);
-  if(p_helper(p_velocity_sensitivity, par) < 0.25f) {
-    velsens -= 0.75f - 3.0f * p_helper(p_velocity_sensitivity, par);
-  }
-
   width = 0.03f * p_helper(p_stereo_width, par);
-  fine = p_helper(p_fine_tuning, par) - 0.5f;
-  random = 0.077f * p_helper(p_random_tuning, par) * p_helper(p_random_tuning, par);
   overdrive = 1.8f * p_helper(p_overdrive, par);
+  random = 0.077f * p_helper(p_random_tuning, par) * p_helper(p_random_tuning, par);
 #endif
 }

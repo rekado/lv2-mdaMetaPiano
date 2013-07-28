@@ -56,11 +56,7 @@ void mdaPianoVoice::on(unsigned char key, unsigned char velocity) {
   update(Current);
 
   float l=99.0f;
-#ifdef PIANO
-  uint32_t k, s;
-#elif defined EPIANO
   long k, s;
-#endif
 
   if(velocity > 0)
   {
@@ -72,7 +68,7 @@ void mdaPianoVoice::on(unsigned char key, unsigned char velocity) {
 
     s = size;
 #ifdef PIANO
-    if(velocity > 40) s += (uint32_t)(sizevel * (float)(velocity - 40));
+    if(velocity > 40) s += (long)(sizevel * (float)(velocity - 40));
 #endif
 
     k = 0;
@@ -82,11 +78,10 @@ void mdaPianoVoice::on(unsigned char key, unsigned char velocity) {
     l += (float)(key - kgrp[k].root); // pitch
 #ifdef PIANO
     l = 22050.0f * iFs * (float)exp(0.05776226505 * l);
-    delta = (uint32_t)(65536.0f * l);
 #elif defined EPIANO
     l = 32000.0f * iFs * (float)exp(0.05776226505 * l);
-    delta = (long)(65536.0f * l);
 #endif
+    delta = (long)(65536.0f * l);
     frac = 0;
     pos = 0;
 
@@ -191,11 +186,7 @@ void mdaPianoVoice::render(uint32_t from, uint32_t to) {
     return;
 
   float x, l, r;
-#ifdef PIANO
-  uint32_t i;
-#elif defined EPIANO
   long i;
-#endif
 
   update(Current);
   for (uint32_t frame = from; frame < to; ++frame) {
@@ -276,7 +267,7 @@ void mdaPianoVoice::render(uint32_t from, uint32_t to) {
 
 void mdaPianoVoice::update(Param par) {
 #ifdef PIANO
-  size = (uint32_t)(12.0f * p_helper(p_hardness_offset, par) - 6.0f);
+  size = (long)(12.0f * p_helper(p_hardness_offset, par) - 6.0f);
   sizevel = 0.12f * p_helper(p_velocity_to_hardness, par);
   muffvel = p_helper(p_velocity_to_muffling, par) * p_helper(p_velocity_to_muffling, par) * 5.0f;
 

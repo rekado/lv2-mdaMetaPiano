@@ -24,16 +24,16 @@ class mdaPianoVoice : public lvtk::Voice {
     float width;
     float fine, random;
     float sizevel, velsens, volume;
+    long size;
 
 #ifdef PIANO
     float comb[256];
     float cdep, trim;
     float stretch;
     float muff, muffvel;
-    uint32_t cpos, size;
+    uint32_t cpos;
 #endif
 #ifdef EPIANO
-    long size;
     float overdrive;
     float lfo0, lfo1, dlfo, lmod, rmod;
     float treb, tfrq, tl, tr;

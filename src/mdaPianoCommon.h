@@ -29,12 +29,12 @@ typedef struct
   short* buffer; //pointer to sample data
 } Sample;
 
-static float scale_midi_to_f(unsigned char data)
+inline float scale_midi_to_f(unsigned char data)
 {
   return 0.0078f * (float)(data);
 }
 
-static unsigned char p_offset(unsigned char i)
+inline unsigned char p_offset(unsigned char i)
 {
   return (i - PARAM_OFFSET);
 }

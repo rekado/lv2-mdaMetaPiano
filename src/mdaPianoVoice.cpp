@@ -77,10 +77,6 @@ void mdaPianoVoice::on(unsigned char key, unsigned char velocity) {
 
     k = 0;
     while(key > (kgrp[k].high + s)) k += SAMPLES_PER_NOTE; // find keygroup
-#ifdef EPIANO
-    if(velocity > 48) k++; // mid velocity sample
-    if(velocity > 80) k++; // high velocity sample
-#endif
     sample_index = k; // store sample index
 
     l += (float)(key - kgrp[k].root); // pitch
@@ -93,6 +89,11 @@ void mdaPianoVoice::on(unsigned char key, unsigned char velocity) {
 #endif
     frac = 0;
     pos = 0;
+
+#ifdef EPIANO
+    if(velocity > 48) sample_index++; // mid velocity sample
+    if(velocity > 80) sample_index++; // high velocity sample
+#endif
 
 #ifdef PIANO
     end = samples[sample_index].size;

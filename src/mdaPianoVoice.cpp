@@ -71,11 +71,11 @@ void mdaPianoVoice::on(unsigned char key, unsigned char velocity) {
     if(velocity > 40) s += (long)(sizevel * (float)(velocity - 40));
 #endif
 
-    k = 0;
-    while(key > (kgrp[k].high + s)) k += SAMPLES_PER_NOTE; // find keygroup
-    sample_index = k; // store sample index
+    sample_index = 0;
+    while (key > (kgrp[sample_index].high + s))
+      sample_index += SAMPLES_PER_NOTE; // find keygroup
 
-    l += (float)(key - kgrp[k].root); // pitch
+    l += (float)(key - kgrp[sample_index].root); // pitch
 #ifdef PIANO
     l = 22050.0f * iFs * (float)exp(0.05776226505 * l);
 #elif defined EPIANO

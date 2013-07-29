@@ -192,7 +192,9 @@ void mdaPianoVoice::render(uint32_t from, uint32_t to) {
     frac += delta;  // integer-based linear interpolation
     pos += frac >> 16;
     frac &= 0xFFFF;  // why AND it with all ones?
-    if(pos > end) pos -= loop; // jump back to loop sample
+    if (pos >= end) {
+      pos -= loop; // jump to loop point in sample
+    }
 
 #ifdef PIANO
     i = samples[sample_index].buffer[pos];

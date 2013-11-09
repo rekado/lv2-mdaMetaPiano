@@ -67,10 +67,11 @@ mdaPiano::mdaPiano(double rate)
 unsigned mdaPiano::find_free_voice(unsigned char key, unsigned char velocity) {
   float l=99.0f;
   int32_t vl=0;
+  unsigned polyphony=*p(p_polyphony); //only allocate as much new polyphony as the params say.
 
   //is this a retriggered note during sustain?
   if (sustain) {
-    for (unsigned i = 0; i < NVOICES; ++i) {
+    for (unsigned i = 0; i < polyphony; ++i) {
       if ((voices[i]->get_key() == key) && (voices[i]->is_sustained())) {
         return i;
       }
@@ -80,15 +81,15 @@ unsigned mdaPiano::find_free_voice(unsigned char key, unsigned char velocity) {
   //take the next free voice if
   // ... notes are sustained but not this new one
   // ... notes are not sustained
-  for (unsigned i = 0; i < NVOICES; ++i) {
+  for (unsigned i = 0; i < polyphony; ++i) {
     if (voices[i]->get_key() == lvtk::INVALID_KEY)
     {
       return i;
     }
   }
 
-  //TODO: steal quietest note if all voices are used up
-  for(unsigned i = 0; i<NVOICES; ++i)  //find quietest voice
+  //Steal quietest note if all voices are used up
+  for(unsigned i = 0; i<polyphony; ++i)  //find quietest voice
   {
     if(voices[i]->get_env() < l) { l = voices[i]->get_env();  vl = i; }
   }

@@ -18,7 +18,7 @@ mdaPianoVoice::mdaPianoVoice(double rate, Sample * master_samples, KGRP * master
   default_preset[p_offset(p_velocity_to_muffling)] = 0.251f;
   default_preset[p_offset(p_velocity_sensitivity)] = 0.376f;
   default_preset[p_offset(p_stereo_width)]         = 0.500f;
-  default_preset[p_offset(p_polyphony)]            = 0.330f; // unused
+  default_preset[p_offset(p_polyphony)]            = 128.0f;
   default_preset[p_offset(p_fine_tuning)]          = 0.500f;
   default_preset[p_offset(p_random_detuning)]      = 0.246f;
   default_preset[p_offset(p_stretch_tuning)]       = 0.500f;
@@ -31,7 +31,7 @@ mdaPianoVoice::mdaPianoVoice(double rate, Sample * master_samples, KGRP * master
   default_preset[p_offset(p_lfo_rate)]             = 0.650f;
   default_preset[p_offset(p_velocity_sensitivity)] = 0.250f;
   default_preset[p_offset(p_stereo_width)]         = 0.500f;
-  default_preset[p_offset(p_polyphony)]            = 0.500f; // unused
+  default_preset[p_offset(p_polyphony)]            = 128.0f;
   default_preset[p_offset(p_fine_tuning)]          = 0.500f;
   default_preset[p_offset(p_random_tuning)]        = 0.146f;
   default_preset[p_offset(p_overdrive)]            = 0.000f;

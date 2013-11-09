@@ -115,7 +115,7 @@
     lv2:index 11;
     lv2:symbol "polyphony";
     lv2:name "Polyphony";
-    lv2:minimum 0;
+    lv2:minimum 1;
     lv2:maximum 200;
     lv2:default 128;
   ] , [

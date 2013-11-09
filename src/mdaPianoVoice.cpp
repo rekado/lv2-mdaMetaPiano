@@ -53,6 +53,7 @@ float mdaPianoVoice::p_helper(unsigned short id, Param d) {
 void mdaPianoVoice::on(unsigned char key, unsigned char velocity) {
   // store key that turned this voice on (used in 'get_key')
   m_key = key;
+  down_note = key;
   update(Current);
 
   float l=99.0f;
@@ -140,6 +141,7 @@ void mdaPianoVoice::reset() {
   env = 0.0f;
   dec = 0.99f;
   sustain = 0;
+  dropped = false;
   volume = 0.2f;
 #ifdef PIANO
   muff = 160.0f;
@@ -150,8 +152,13 @@ void mdaPianoVoice::reset() {
   lfo1 = 1.0f;
 #endif
   m_key = lvtk::INVALID_KEY;
+  down_note = lvtk::INVALID_KEY;
 }
 
+void mdaPianoVoice::drop() {
+  dropped = true;
+  dec=0.99f;
+}
 
 void mdaPianoVoice::release(unsigned char velocity) {
   if(sustain==0) {
@@ -254,6 +261,8 @@ void mdaPianoVoice::render(uint32_t from, uint32_t to) {
   // turn off further processing when the envelope has rendered the voice silent
   if (env < SILENCE) {
     m_key = lvtk::INVALID_KEY;
+    down_note = lvtk::INVALID_KEY;
+    dropped = false;
   }
 
 #ifdef EPIANO

@@ -15,6 +15,7 @@
 #include "mdaPianoCommon.h"
 #include "mdaPiano.h"
 #include <cstdlib> //for exit
+#include <math.h>
 
 #define STRING_BUF 2048
 
@@ -65,36 +66,44 @@ mdaPiano::mdaPiano(double rate)
 
 
 unsigned mdaPiano::find_free_voice(unsigned char key, unsigned char velocity) {
-  float l=99.0f;
-  int32_t vl=0;
-  unsigned polyphony=*p(p_polyphony); //only allocate as much new polyphony as the params say.
+  float l=1000.0f;
+  unsigned quietest_voice = 0;
+  int free_voice = -1;
+  //only allocate as much new polyphony as the params say.
+  unsigned polyphony=(unsigned)abs(round(*p(p_polyphony)));
+  unsigned down = 0;
 
-  //is this a retriggered note during sustain?
-  if (sustain) {
-    for (unsigned i = 0; i < polyphony; ++i) {
-      if ((voices[i]->get_key() == key) && (voices[i]->is_sustained())) {
-        return i;
-      }
+  for (unsigned i = 0; i < NVOICES; ++i) {
+		// is this a retriggered note during sustain?
+    if (sustain && (voices[i]->get_note() == key) && (voices[i]->is_sustained())) {
+        voices[i]->drop(); //drop it
+    }
+    
+    // skip dropped voices
+    if(voices[i]->was_dropped() == true) continue;
+
+    if(voices[i]->get_key() == lvtk::INVALID_KEY) {
+      // take the first free voice
+      if(free_voice < 0) free_voice = i; 
+    } else {
+			// keep track of used voices
+			if(voices[i]->get_env() < l )
+				{ l = voices[i]->get_env();  quietest_voice = i; }
+			down++;
     }
   }
-
-  //take the next free voice if
-  // ... notes are sustained but not this new one
-  // ... notes are not sustained
-  for (unsigned i = 0; i < polyphony; ++i) {
-    if (voices[i]->get_key() == lvtk::INVALID_KEY)
-    {
-      return i;
-    }
-  }
-
-  //Steal quietest note if all voices are used up
-  for(unsigned i = 0; i<polyphony; ++i)  //find quietest voice
-  {
-    if(voices[i]->get_env() < l) { l = voices[i]->get_env();  vl = i; }
-  }
-
-  return vl;
+  
+  if(down >= polyphony) {
+    // drop the quietest voice if we need to
+    voices[quietest_voice]->drop();
+	}
+  if (free_voice >=0) {
+		// if we found a free voice
+		return (unsigned)free_voice;
+  } else {
+		// as a last resort we steal; hope no one is paying attention
+		return quietest_voice;
+	}
 }
 
 

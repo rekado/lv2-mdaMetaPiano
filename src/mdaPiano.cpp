@@ -65,6 +65,9 @@ mdaPiano::mdaPiano(double rate)
 
 
 unsigned mdaPiano::find_free_voice(unsigned char key, unsigned char velocity) {
+  float l=99.0f;
+  int32_t vl=0;
+
   //is this a retriggered note during sustain?
   if (sustain) {
     for (unsigned i = 0; i < NVOICES; ++i) {
@@ -85,7 +88,12 @@ unsigned mdaPiano::find_free_voice(unsigned char key, unsigned char velocity) {
   }
 
   //TODO: steal quietest note if all voices are used up
-  return 0;
+  for(unsigned i = 0; i<NVOICES; ++i)  //find quietest voice
+  {
+    if(voices[i]->get_env() < l) { l = voices[i]->get_env();  vl = i; }
+  }
+
+  return vl;
 }
 
 

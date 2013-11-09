@@ -88,6 +88,7 @@ class mdaPianoVoice : public lvtk::Voice {
     void reset(void);
     bool is_sustained(void) { return (m_key == SUSTAIN); }
     unsigned char get_key(void) const { return m_key; }
+    float get_env(void) { return env; }
 
     // generates the sound for this voice
     void render(uint32_t, uint32_t);

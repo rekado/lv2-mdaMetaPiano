@@ -34,9 +34,6 @@ pre:default
     lv2:symbol "stereo_width" ;
     pset:value 0.500
   ] , [
-    lv2:symbol "polyphony" ;
-    pset:value 0.330
-  ] , [
     lv2:symbol "fine_tuning" ;
     pset:value 0.500
   ] , [

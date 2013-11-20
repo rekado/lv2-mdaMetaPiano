@@ -34,9 +34,6 @@ pre:school
     lv2:symbol "stereo_width" ;
     pset:value 0.331
   ] , [
-    lv2:symbol "polyphony" ;
-    pset:value 0.330
-  ] , [
     lv2:symbol "fine_tuning" ;
     pset:value 0.500
   ] , [

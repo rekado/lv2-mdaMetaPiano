@@ -21,6 +21,7 @@ class mdaPianoVoice : public lvtk::Voice {
     Sample *samples;
     uint32_t sample_index;
     short sustain;
+    bool dropped;
     float width;
     float fine, random;
     float sizevel, velsens, volume;
@@ -72,6 +73,7 @@ class mdaPianoVoice : public lvtk::Voice {
 
   protected:
     unsigned char m_key;
+    unsigned char down_note;
 
   public:
     mdaPianoVoice(double, Sample*, KGRP*);
@@ -84,10 +86,14 @@ class mdaPianoVoice : public lvtk::Voice {
     float p_helper(unsigned short, Param);
     void update(Param); // recalculates internal variables
     void on(unsigned char key, unsigned char velocity);
+    void drop(void);
     void release(unsigned char velocity);
     void reset(void);
     bool is_sustained(void) { return (m_key == SUSTAIN); }
+    bool was_dropped(void) {return dropped; }
     unsigned char get_key(void) const { return m_key; }
+    unsigned char get_note(void) const {return down_note; }
+    float get_env(void) { return env; }
 
     // generates the sound for this voice
     void render(uint32_t, uint32_t);

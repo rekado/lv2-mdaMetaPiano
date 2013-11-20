@@ -71,7 +71,7 @@ unsigned mdaPiano::find_free_voice(unsigned char key, unsigned char velocity) {
   int free_voice = -1;
   //only allocate as much new polyphony as the params say.
   unsigned polyphony=(unsigned)abs(round(*p(p_polyphony)));
-  unsigned down = 0;
+  unsigned down = 0; //keys "down" (used voices)
 
   for (unsigned i = 0; i < NVOICES; ++i) {
 		// is this a retriggered note during sustain?
@@ -79,17 +79,17 @@ unsigned mdaPiano::find_free_voice(unsigned char key, unsigned char velocity) {
         voices[i]->drop(); //drop it
     }
     
-    // skip dropped voices
+    // let dropped voices decay (don't do anything else with them)
     if(voices[i]->was_dropped() == true) continue;
 
     if(voices[i]->get_key() == lvtk::INVALID_KEY) {
-      // take the first free voice
-      if(free_voice < 0) free_voice = i; 
+	// take the first free voice
+	if(free_voice < 0) free_voice = i; 
     } else {
-			// keep track of used voices
-			if(voices[i]->get_env() < l )
-				{ l = voices[i]->get_env();  quietest_voice = i; }
-			down++;
+	// keep track of used voices
+	if(voices[i]->get_env() < l )
+		{ l = voices[i]->get_env();  quietest_voice = i; }
+	down++;
     }
   }
   

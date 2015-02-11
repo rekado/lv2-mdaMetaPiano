@@ -54,4 +54,5 @@ automatically.
 The original mda VST plug-ins by Paul Kellett are released under the
 MIT license or under the GPL "either version 2 of the License, or (at
 your option) any later version". The LV2 ports of the mdaPiano and
-mdaEPiano plugins by rekado are released under the same licenses.
+mdaEPiano plugins by rekado are released under GPLv3, or (at your
+option) any later version.

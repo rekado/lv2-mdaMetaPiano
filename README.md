@@ -6,10 +6,7 @@ Based on the mdaPiano / mdaEPiano sources
 
 # MOVED!
 
-This repository has moved to gitorious: <https://gitorious.org/lv2-synths/lv2-mdametapiano/>
+This repository has moved to my own git server: <http://git.elephly.net/software/lv2-mdametapiano.git>
 The Github clone will no longer be updated.
 
-Gitorious is
-[free software](https://www.gnu.org/philosophy/free-sw.html), whereas
-Github is not.  You do not need to use Github to contribute to free
-software.
+Github is NOT [free software](https://www.gnu.org/philosophy/free-sw.html).  You do not need to use Github to contribute to free software.
